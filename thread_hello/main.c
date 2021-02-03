@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <pthread.h>
 
@@ -31,6 +32,10 @@ void	*ft_strlen(void *args)
 {
 	t_str	*str;
 
+	struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	printf("seconds : %ld\nmicro seconds : %d\n",
+	current_time.tv_sec, current_time.tv_usec);
 	str = (t_str*)args;
 	if (str->s == NULL)
 	{
@@ -44,6 +49,19 @@ void	*ft_strlen(void *args)
 
 int		main(void)
 {
+
+	/*
+	struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	printf("seconds : %ld\nmicro seconds : %d\n",
+	current_time.tv_sec, current_time.tv_usec);
+	*/
+
+
+
+
+
+
 	pthread_t	threads[4];
 	char	*msgs[] = {"First", NULL, "Third", "Fourth"};
 	t_str		args[4];
@@ -68,6 +86,11 @@ int		main(void)
 	for (int i = 0; i < 4; i += 1)
 	{
 		status = pthread_join(threads[i], (void**)&status_addr);
+		printf("\nKILLLL\n");
+		struct timeval current_time;
+		gettimeofday(&current_time, NULL);
+		printf("seconds : %ld\nmicro seconds : %d\n",
+		current_time.tv_sec, current_time.tv_usec);
 		if (status != 0)
 		{
 			write(2, "Error: can't join thread\n", 26);
