@@ -1,27 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/03 18:22:09 by gdrive            #+#    #+#             */
-/*   Updated: 2021/02/03 18:22:10 by gdrive           ###   ########.fr       */
+/*   Created: 2020/11/02 16:30:09 by gdrive            #+#    #+#             */
+/*   Updated: 2020/11/02 18:55:10 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-**	args:
-**		number_of_philos
-**		time_to_die (lifetime after eating)
-**		time_to_eat (philo will spend for eating)
-**		time_to_sleep (philo will spend for sleep)
-**		number_of_times_each_philo_must_eat
-**
-**		P.s. Time in miliseconds.
-*/
+#include <unistd.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+void	ft_putnbr_fd(int n, int fd)
 {
-	return (0);
+	if (fd < 0)
+		return ;
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-n, fd);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+		ft_putchar_fd(n + '0', fd);
+	return ;
 }
