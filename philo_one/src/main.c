@@ -10,73 +10,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-**	args:
-**		number_of_philos
-**		time_to_die (lifetime after eating)
-**		time_to_eat (philo will spend for eating)
-**		time_to_sleep (philo will spend for sleep)
-**		[number_of_times_each_philo_must_eat]
-**
-**		P.s. Time in miliseconds.
-*/
-
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
 
-#include "libft.h"
+#include "table_initiation.h"
 
-typedef struct		s_input_args
+void	print_table(t_table *table)
 {
-	int				nb_of_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				nb_of_times_each_philo_must_eat;
-}					t_input_args;
+	printf("------ TABLE ------\n");
 
-t_input_args	*parse_argumets(int argc, char **argv)
-{
-	t_input_args	*args;
+	printf("\n~~~~~~input args:\n\n");
 
-	if (argc < 5 || argc > 6)
-		return (NULL);
-	if ((args = (t_input_args*)malloc(sizeof(t_input_args))) == NULL)
-		return (NULL);
-	args->nb_of_philos = ft_atoi(argv[1]);
-	args->time_to_die = ft_atoi(argv[2]);
-	args->time_to_eat = ft_atoi(argv[3]);
-	args->time_to_sleep = ft_atoi(argv[4]);
-	if (argc > 5)
-		args->nb_of_times_each_philo_must_eat = ft_atoi(argv[5]);
-	return (args);
+	t_input_args	*args = table->args;
+	printf("nb_of_philos = |%u|\n", args->nb_of_philos);
+	printf("time_to_die = |%u|\n", args->time_to_die);
+	printf("time_to_eat = |%u|\n", args->time_to_eat);
+	printf("time_to_sleep = |%u|\n", args->time_to_sleep);
+	printf("nb_of_must_eat = |%u|\n", args->nb_of_must_eat);
+
+	printf("\n~~~~~~~~~~~~~~~~~\n");
+	for (uint32_t i = 0; i < table->args->nb_of_philos; i += 1)
+	{
+		printf("\nphilos_id[%u]:\nleft_fork_id =  |%u|\nleft_right_id = |%u|\n",
+				table->philos[i].id,
+				table->philos[i].left_fork->id,
+				table->philos[i].right_fork->id);
+	}
+
+	printf("\n-------------------\n");
 }
 
-void	exit_with_arguments_error(void)
+static void	exit_with_arguments_error(void)
 {
 	write(2, "Error: not valid argumets\n", 27);
 	exit(1);
 }
 
-void	printf_input_args(t_input_args *args)
+int			main(int argc, char **argv)
 {
-	printf("~~ input_args: ~~\n");
-	printf("nb_of_philos = |%d|\n", args->nb_of_philos);
-	printf("time_to_die = |%d|\n", args->time_to_die);
-	printf("time_to_eat = |%d|\n", args->time_to_eat);
-	printf("time_to_sleep = |%d|\n", args->time_to_sleep);
-	printf("nb_of_times_each_philo_must_eat = |%d|\n", args->nb_of_times_each_philo_must_eat);
-	printf("~~~~~~~~~~~~~~~~~\n");
-}
+	t_table		*table;
 
-int		main(int argc, char **argv)
-{
-	t_input_args	*args;
-
-	if ((args = parse_argumets(argc, argv)) == NULL)
+	if ((table = init_table(argc, argv)) == NULL)
 		exit_with_arguments_error();
-	printf_input_args(args);
-	free(args);
+	print_table(table);
+	del_table(&table);
+	sleep(20);
 	return (0);
 }

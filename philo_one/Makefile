@@ -2,9 +2,18 @@
 
 NAME = philo_one
 
-SOURCE_FILES = main.c
+SOURCE_FILES =	main.c\
+				$(TABLE_INITIATION)
 
-SRC = $(addprefix src/, $(SOURCE_FILES))
+SRC =	$(addprefix src/, $(SOURCE_FILES))
+
+##############################  TABLE INITIATION  ##############################
+
+TABLE_INITIATION_FILES = init_table.c
+
+TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
+
+################################################################################
 
 ###################################  LIBS  #####################################
 
