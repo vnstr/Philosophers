@@ -3,7 +3,9 @@
 NAME = philo_one
 
 SOURCE_FILES =	main.c\
-				$(TABLE_INITIATION)
+				$(TABLE_INITIATION)\
+				$(SIMULATION)\
+				$(UTILS)
 
 SRC =	$(addprefix src/, $(SOURCE_FILES))
 
@@ -12,6 +14,22 @@ SRC =	$(addprefix src/, $(SOURCE_FILES))
 TABLE_INITIATION_FILES = init_table.c
 
 TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
+
+################################################################################
+
+##############################     SIMULATION     ##############################
+
+SIMULATION_FILES = start_simulation.c
+
+SIMULATION = $(addprefix simulation/, $(SIMULATION_FILES))
+
+################################################################################
+
+##############################       UTILS        ##############################
+
+UTILS_FILES = get_time.c
+
+UTILS = $(addprefix utils/, $(UTILS_FILES))
 
 ################################################################################
 

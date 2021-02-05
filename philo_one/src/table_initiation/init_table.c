@@ -43,9 +43,7 @@ void		del_forks(t_fork **forks, uint32_t amount)
 	while (i < amount)
 	{
 		if ((*forks)[i].mutex_f != 0)
-		{
 			pthread_mutex_destroy(&((*forks)[i].mutex));
-		}
 		i += 1;
 	}
 	free(*forks);
@@ -81,11 +79,88 @@ t_fork		*init_forks(uint32_t amount)
 	return (forks);
 }
 
-t_philo		*init_philos(uint32_t amount)
+void		del_msgs(t_msgs **msgs)
 {
-	t_philo		*philos;
+	if ((*msgs)->eating != NULL)
+	{
+		free((*msgs)->eating);
+		(*msgs)->eating = NULL;
+	}
+	if ((*msgs)->sleeping != NULL)
+	{
+		free((*msgs)->sleeping);
+		(*msgs)->sleeping = NULL;
+	}
+	if ((*msgs)->thinking != NULL)
+	{
+		free((*msgs)->thinking);
+		(*msgs)->thinking = NULL;
+	}
+	if ((*msgs)->die != NULL)
+	{
+		free((*msgs)->die);
+		(*msgs)->die = NULL;
+	}
+	free(*msgs);
+	*msgs = NULL;
+}
+
+t_msgs		*init_msgs(void)
+{
+	t_msgs	*msgs;
+
+	msgs = (t_msgs*)malloc(sizeof(t_msgs));
+	if (msgs == NULL)
+		return (NULL);
+	msgs->eating = NULL;
+	msgs->sleeping = NULL;
+	msgs->thinking = NULL;
+	msgs->die = NULL;
+	if ((msgs->eating = ft_strdup(EATING)) == NULL)
+	{
+		del_msgs(&msgs);
+		return (NULL);
+	}
+	if ((msgs->sleeping = ft_strdup(SLEEPING)) == NULL)
+	{
+		del_msgs(&msgs);
+		return (NULL);
+	}
+	if ((msgs->thinking = ft_strdup(THINKING)) == NULL)
+	{
+		del_msgs(&msgs);
+		return (NULL);
+	}
+	if ((msgs->die = ft_strdup(DIE)) == NULL)
+	{
+		del_msgs(&msgs);
+		return (NULL);
+	}
+	return (msgs);
+}
+
+void		del_philos(t_philo **philos, uint32_t amount)
+{
 	uint32_t	i;
 
+	i = 0;
+	while (i < amount)
+	{
+		if (((*philos)[i]).msgs != NULL)
+			del_msgs(&(((*philos)[i]).msgs));
+		i += 1;
+	}
+	free(*philos);
+	*philos = NULL;
+}
+
+t_philo		*init_philos(t_table *table)
+{
+	t_philo		*philos;
+	uint32_t	amount;
+	uint32_t	i;
+
+	amount = table->args->nb_of_philos;
 	philos = (t_philo*)malloc(sizeof(t_philo) * amount + 1);
 	if (philos == NULL)
 		return (NULL);
@@ -93,6 +168,12 @@ t_philo		*init_philos(uint32_t amount)
 	while (i < amount)
 	{
 		philos[i].id = i;
+		philos[i].saying = &(table->saying);
+		if ((philos[i].msgs = init_msgs()) == NULL)
+		{
+			free(philos);
+			return (NULL);
+		}
 		i += 1;
 	}
 	return (philos);
@@ -101,7 +182,9 @@ t_philo		*init_philos(uint32_t amount)
 void	del_table(t_table **table)
 {
 	if ((*table)->philos != NULL)
-		free((*table)->philos);
+	{
+		del_philos(&((*table)->philos), (*table)->args->nb_of_philos);
+	}
 	del_forks(&((*table)->forks), (*table)->args->nb_of_philos);
 	if ((*table)->args != NULL)
 		free((*table)->args);
@@ -139,19 +222,28 @@ t_table	*init_table(int argc, char **argv)
 	table->args = NULL;
 	table->philos = NULL;
 	table->forks = NULL;
+
+	if (pthread_mutex_init(&(table->saying), NULL) != 0)
+	{
+		del_table(&table);
+		return (NULL);
+	}
+
 	table->args = parse_argumets(argc, argv);
 	if (table->args == NULL)
 	{
 		del_table(&table);
 		return (NULL);
 	}
+
 	table->forks = init_forks(table->args->nb_of_philos);
 	if (table->forks == NULL)
 	{
 		del_table(&table);
 		return (NULL);
 	}
-	table->philos = init_philos(table->args->nb_of_philos);
+
+	table->philos = init_philos(table);
 	if (table->philos == NULL)
 	{
 		del_table(&table);

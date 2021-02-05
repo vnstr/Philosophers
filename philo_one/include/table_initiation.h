@@ -32,12 +32,27 @@ typedef struct		s_fork
 	int				id;
 }					t_fork;
 
+# define EATING "I eat\n"
+# define SLEEPING "I sleep\n"
+# define THINKING "I think\n"
+# define DIE "I am dying\n"
+
+typedef struct		s_msgs
+{
+	char			*eating;
+	char			*sleeping;
+	char			*thinking;
+	char			*die;
+}					t_msgs;
+
 typedef struct		s_philo
 {
-	pthread_t		*philo;
+	pthread_t		philo;
 	int				id;
+	t_msgs			*msgs;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
+	pthread_mutex_t	*saying;
 }					t_philo;
 
 typedef struct		s_table
@@ -45,6 +60,7 @@ typedef struct		s_table
 	t_input_args	*args;
 	t_fork			*forks;
 	t_philo			*philos;
+	pthread_mutex_t	saying;
 }					t_table;
 
 t_table				*init_table(int argc, char **argv);

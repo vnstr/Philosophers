@@ -86,11 +86,6 @@ int		main(void)
 	for (int i = 0; i < 4; i += 1)
 	{
 		status = pthread_join(threads[i], (void**)&status_addr);
-		printf("\nKILLLL\n");
-		struct timeval current_time;
-		gettimeofday(&current_time, NULL);
-		printf("seconds : %ld\nmicro seconds : %d\n",
-		current_time.tv_sec, current_time.tv_usec);
 		if (status != 0)
 		{
 			write(2, "Error: can't join thread\n", 26);

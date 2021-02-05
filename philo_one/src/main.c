@@ -16,6 +16,8 @@
 #include <stdio.h>
 
 #include "table_initiation.h"
+#include "simulation.h"
+#include "utils.h"
 
 void	print_table(t_table *table)
 {
@@ -31,6 +33,16 @@ void	print_table(t_table *table)
 	printf("nb_of_must_eat = |%u|\n", args->nb_of_must_eat);
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
+
+	printf("\n~~~~~~~~messages:\n\n");
+
+	printf("eating:   %s", table->philos->msgs->eating);
+	printf("sleep:    %s", table->philos->msgs->sleeping);
+	printf("thinking: %s", table->philos->msgs->thinking);
+	printf("die:      %s", table->philos->msgs->die);
+
+	printf("\n~~~~~~~~~~~~~~~~~\n");
+
 	for (uint32_t i = 0; i < table->args->nb_of_philos; i += 1)
 	{
 		printf("\nphilos_id[%u]:\nleft_fork_id =  |%u|\nleft_right_id = |%u|\n",
@@ -48,6 +60,8 @@ static void	exit_with_arguments_error(void)
 	exit(1);
 }
 
+# include <sys/time.h>
+
 int			main(int argc, char **argv)
 {
 	t_table		*table;
@@ -55,6 +69,12 @@ int			main(int argc, char **argv)
 	if ((table = init_table(argc, argv)) == NULL)
 		exit_with_arguments_error();
 	print_table(table);
+	if (start_simulation(table) != 0)
+	{
+		del_table(&table);
+		write(2, "Error: simulation\n", 19);
+		exit(1);
+	}
 	del_table(&table);
 	sleep(20);
 	return (0);
