@@ -67,11 +67,20 @@ typedef struct		s_philo
 	int				id;
 }					t_philo;
 
+typedef struct		s_tracking
+{
+	pthread_t		thread;
+	t_input_args	*args;
+	t_philo			*philos;
+	uint8_t			*someone_dead_f;
+}					t_tracking;
+
 typedef struct		s_table
 {
 	t_input_args	*args;
 	t_fork			*forks;
 	t_philo			*philos;
+	t_tracking		*tracking;
 	pthread_mutex_t	saying;
 	uint64_t		start_sim_time;
 	uint8_t			saying_mutex_f;

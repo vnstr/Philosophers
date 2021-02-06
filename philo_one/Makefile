@@ -21,7 +21,8 @@ TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
 ##############################     SIMULATION     ##############################
 
 SIMULATION_FILES = start_simulation.c\
-				   live.c
+				   live.c\
+				   track.c
 
 SIMULATION = $(addprefix simulation/, $(SIMULATION_FILES))
 

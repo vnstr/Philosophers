@@ -17,5 +17,8 @@
 
 int		start_simulation(t_table *table);
 void	*live(void *philo_arg);
+void	*track(void *tracking);
+
+void	get_dying(t_philo *philo);
 
 #endif

@@ -196,6 +196,8 @@ void	del_table(t_table **table)
 		free((*table)->args);
 	if ((*table)->saying_mutex_f != 0)
 		pthread_mutex_destroy(&((*table)->saying));
+	if ((*table)->tracking != NULL)
+		free((*table)->tracking);
 	free(*table);
 }
 
@@ -221,6 +223,19 @@ void	put_forks_to_philos(t_table *table)
 	}
 }
 
+t_tracking	*init_tracking(t_table *table)
+{
+	t_tracking	*tracking;
+
+	tracking = (t_tracking*)malloc(sizeof(t_tracking));
+	if (tracking == NULL)
+		return (NULL);
+	tracking->args = table->args;
+	tracking->philos = table->philos;
+	tracking->someone_dead_f = &table->someone_dead_f;
+	return (tracking);
+}
+
 t_table	*init_table(int argc, char **argv)
 {
 	t_table	*table;
@@ -228,8 +243,9 @@ t_table	*init_table(int argc, char **argv)
 	if ((table = (t_table*)malloc(sizeof(t_table))) == NULL)
 		return (NULL);
 	table->args = NULL;
-	table->philos = NULL;
 	table->forks = NULL;
+	table->philos = NULL;
+	table->tracking = NULL;
 	table->start_sim_time = 0;
 	table->saying_mutex_f = 0;
 
@@ -261,5 +277,11 @@ t_table	*init_table(int argc, char **argv)
 		return (NULL);
 	}
 	put_forks_to_philos(table);
+	table->tracking = init_tracking(table);
+	if (table->tracking == NULL)
+	{
+		del_table(&table);
+		return (NULL);
+	}
 	return (table);
 }
