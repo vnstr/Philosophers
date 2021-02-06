@@ -167,19 +167,22 @@ t_philo		*init_philos(t_table *table)
 	i = 0;
 	while (i < amount)
 	{
-		philos[i].id = i;
-		philos[i].saying = &(table->saying);
-		philos[i].someone_dead_f = &(table->someone_dead_f);
-		philos[i].start_sim_time = &(table->start_sim_time);
-		philos[i].time_to_die = &(table->args->time_to_die);
-		philos[i].time_to_eat = &(table->args->time_to_eat);
-		philos[i].time_to_sleep = &(table->args->time_to_sleep);
-		philos[i].nb_of_must_eat = &(table->args->nb_of_must_eat);
 		if ((philos[i].msgs = init_msgs()) == NULL)
 		{
 			free(philos);
 			return (NULL);
 		}
+		philos[i].saying = &(table->saying);
+		philos[i].someone_dead_f = &(table->someone_dead_f);
+		philos[i].each_eated_f = &(table->each_eated_f);
+		philos[i].start_sim_time = &(table->start_sim_time);
+		philos[i].time_to_die = &(table->args->time_to_die);
+		philos[i].time_to_eat = &(table->args->time_to_eat);
+		philos[i].time_to_sleep = &(table->args->time_to_sleep);
+		philos[i].nb_of_must_eat = &(table->args->nb_of_must_eat);
+		philos[i].last_eating_time = 0;
+		philos[i].eating_counter = 0;
+		philos[i].id = i;
 		i += 1;
 	}
 	return (philos);
@@ -233,6 +236,7 @@ t_tracking	*init_tracking(t_table *table)
 	tracking->args = table->args;
 	tracking->philos = table->philos;
 	tracking->someone_dead_f = &table->someone_dead_f;
+	tracking->each_eated_f = &table->each_eated_f;
 	return (tracking);
 }
 
@@ -248,6 +252,8 @@ t_table	*init_table(int argc, char **argv)
 	table->tracking = NULL;
 	table->start_sim_time = 0;
 	table->saying_mutex_f = 0;
+	table->someone_dead_f = 0;
+	table->each_eated_f = 0;
 
 	if (pthread_mutex_init(&(table->saying), NULL) != 0)
 	{

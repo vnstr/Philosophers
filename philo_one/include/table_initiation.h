@@ -58,12 +58,14 @@ typedef struct		s_philo
 	t_fork			*right_fork;
 	pthread_mutex_t	*saying;
 	uint8_t			*someone_dead_f;
+	uint8_t			*each_eated_f;
 	uint64_t		*start_sim_time;
 	uint32_t		*time_to_die;
 	uint32_t		*time_to_eat;
 	uint32_t		*time_to_sleep;
 	uint32_t		*nb_of_must_eat;
 	uint64_t		last_eating_time;
+	uint64_t		eating_counter;
 	int				id;
 }					t_philo;
 
@@ -73,6 +75,7 @@ typedef struct		s_tracking
 	t_input_args	*args;
 	t_philo			*philos;
 	uint8_t			*someone_dead_f;
+	uint8_t			*each_eated_f;
 }					t_tracking;
 
 typedef struct		s_table
@@ -85,6 +88,7 @@ typedef struct		s_table
 	uint64_t		start_sim_time;
 	uint8_t			saying_mutex_f;
 	uint8_t			someone_dead_f;
+	uint8_t			each_eated_f;
 }					t_table;
 
 t_table				*init_table(int argc, char **argv);
