@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   saying.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/02 16:30:09 by gdrive            #+#    #+#             */
-/*   Updated: 2020/11/02 18:55:10 by gdrive           ###   ########.fr       */
+/*   Created: 2021/02/06 16:28:01 by gdrive            #+#    #+#             */
+/*   Updated: 2021/02/06 16:28:03 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <unistd.h>
-#include "libft.h"
+#ifndef SAYING_H
+# define SAYING_H
 
-void	ft_putnbr_fd(uint64_t n, int fd)
-{
-	if (fd < 0)
-		return ;
-	if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(-n, fd);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
-	else
-		ft_putchar_fd(n + '0', fd);
-	return ;
-}
+# include <stdint.h>
+
+# define STDOUT 1
+
+void	print_preview(uint64_t time, int id);
+void	say_msg(char *msg);
+
+void	say_eating(t_philo *philo);
+void	say_thinking(t_philo *philo);
+void	say_sleeping(t_philo *philo);
+void	say_dying(t_philo *philo);
+
+#endif

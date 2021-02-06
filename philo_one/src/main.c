@@ -39,7 +39,7 @@ void	print_table(t_table *table)
 	printf("eating:   %s", table->philos->msgs->eating);
 	printf("sleep:    %s", table->philos->msgs->sleeping);
 	printf("thinking: %s", table->philos->msgs->thinking);
-	printf("die:      %s", table->philos->msgs->die);
+	printf("die:      %s", table->philos->msgs->dying);
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
 
@@ -76,6 +76,7 @@ int			main(int argc, char **argv)
 		exit(1);
 	}
 	del_table(&table);
-	sleep(20);
+	//sleep(20);
+	//usleep(20000000);
 	return (0);
 }

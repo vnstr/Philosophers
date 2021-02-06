@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/02 16:30:09 by gdrive            #+#    #+#             */
-/*   Updated: 2020/11/02 18:55:10 by gdrive           ###   ########.fr       */
+/*   Created: 2021/02/06 18:43:42 by gdrive            #+#    #+#             */
+/*   Updated: 2021/02/06 18:43:43 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
 #include <unistd.h>
-#include "libft.h"
+#include <stdio.h>
 
-void	ft_putnbr_fd(uint64_t n, int fd)
+#include "libft.h"
+#include "table_initiation.h"
+#include "saying.h"
+
+void	print_preview(uint64_t time, int id)
 {
-	if (fd < 0)
-		return ;
-	if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(-n, fd);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
-	else
-		ft_putchar_fd(n + '0', fd);
-	return ;
+	ft_putnbr_fd(time, STDOUT);
+	write(1, ": philo-", 8);
+	ft_putnbr_fd(id, STDOUT);
 }

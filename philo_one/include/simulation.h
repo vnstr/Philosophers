@@ -13,6 +13,9 @@
 #ifndef SIMULATION_H
 # define SIMULATION_H
 
-int	start_simulation(t_table *table);
+ #include "table_initiation.h"
+
+int		start_simulation(t_table *table);
+void	*live(void *philo_arg);
 
 #endif

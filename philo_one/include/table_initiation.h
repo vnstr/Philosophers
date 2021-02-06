@@ -16,6 +16,9 @@
 # include <pthread.h>
 # include <stdint.h>
 
+# define CREATE_THREAD_ERROR "Error: can't create thread\n"
+# define JOIN_THREAD_ERROR "Error: can't join thread\n"
+
 typedef struct		s_input_args
 {
 	uint32_t		nb_of_philos;
@@ -32,27 +35,36 @@ typedef struct		s_fork
 	int				id;
 }					t_fork;
 
-# define EATING "I eat\n"
-# define SLEEPING "I sleep\n"
-# define THINKING "I think\n"
-# define DIE "I am dying\n"
+# define STDOUT 1
+
+# define EATING ": \"I eat\"\n"
+# define SLEEPING ": \"I sleep\"\n"
+# define THINKING ": \"I think\"\n"
+# define DIE ": \"I am dying\"\n"
 
 typedef struct		s_msgs
 {
 	char			*eating;
 	char			*sleeping;
 	char			*thinking;
-	char			*die;
+	char			*dying;
 }					t_msgs;
 
 typedef struct		s_philo
 {
-	pthread_t		philo;
-	int				id;
+	pthread_t		thread;
 	t_msgs			*msgs;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	pthread_mutex_t	*saying;
+	uint8_t			*someone_dead_f;
+	uint64_t		*start_sim_time;
+	uint32_t		*time_to_die;
+	uint32_t		*time_to_eat;
+	uint32_t		*time_to_sleep;
+	uint32_t		*nb_of_must_eat;
+	uint64_t		last_eating_time;
+	int				id;
 }					t_philo;
 
 typedef struct		s_table
@@ -61,6 +73,9 @@ typedef struct		s_table
 	t_fork			*forks;
 	t_philo			*philos;
 	pthread_mutex_t	saying;
+	uint64_t		start_sim_time;
+	uint8_t			saying_mutex_f;
+	uint8_t			someone_dead_f;
 }					t_table;
 
 t_table				*init_table(int argc, char **argv);

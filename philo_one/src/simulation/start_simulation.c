@@ -11,50 +11,63 @@
 /* ************************************************************************** */
 
 #include <stdint.h>
-#include <unistd.h>
-#include <stdio.h>
 
 #include "libft.h"
+#include "simulation.h"
 #include "table_initiation.h"
+#include "utils.h"
 
-void	*live(void *philo_arg)
-{
-	t_philo		*philo;
-
-	philo = (t_philo*)philo_arg;
-	pthread_mutex_lock(philo->saying);
-	write(1, philo->msgs->eating, ft_strlen(philo->msgs->eating));
-	pthread_mutex_unlock(philo->saying);
-	return (NULL);
-}
-
-int		start_simulation(t_table *table)
+static uint32_t		create_threads(t_table *table)
 {
 	t_philo		*philos;
+	uint32_t	amount;
 	uint32_t	i;
 
+	amount = table->args->nb_of_philos;
 	philos = table->philos;
 	i = 0;
-	while (i < table->args->nb_of_philos)
+	table->start_sim_time = get_time();
+	while (i < amount)
 	{
-		if (pthread_create(&(philos[i].philo), NULL, live, (void*)&(philos[i])) != 0)
+		if (pthread_create(&philos[i].thread, NULL, live, (void*)&philos[i]))
 		{
-			write(2, "Error: can't create thread\n", 28);
-			return (1);
+			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
+			return (i);
 		}
 		i += 1;
 	}
-	int	join_status = 0;
+	return (i);
+}
+
+static uint32_t	join_threads(t_table *table)
+{
+	t_philo		*philos;
+	uint32_t	amount;
+	uint32_t	i;
+
+	amount = table->args->nb_of_philos;
+	philos = table->philos;
 	i = 0;
-	while (i < table->args->nb_of_philos)
+	while (i < amount)
 	{
-		if (pthread_join(philos[i].philo, (void**)&join_status) != 0)
+		if (pthread_join(philos[i].thread, NULL))
 		{
-			write(2, "Error: can't join thread\n", 26);
-			return (1);
+			ft_putstr_fd(JOIN_THREAD_ERROR, 2);
+			return (i);
 		}
-		printf("join_status = |%d|\n", join_status);
 		i += 1;
 	}
+	return (i);
+}
+
+int				start_simulation(t_table *table)
+{
+	uint32_t	nb_of_threads;
+
+	nb_of_threads = table->args->nb_of_philos;
+	if (create_threads(table) != nb_of_threads)
+		return (1);
+	if (join_threads(table) != nb_of_threads)
+		return (1);
 	return (0);
 }

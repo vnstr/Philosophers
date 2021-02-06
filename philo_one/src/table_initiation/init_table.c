@@ -96,10 +96,10 @@ void		del_msgs(t_msgs **msgs)
 		free((*msgs)->thinking);
 		(*msgs)->thinking = NULL;
 	}
-	if ((*msgs)->die != NULL)
+	if ((*msgs)->dying != NULL)
 	{
-		free((*msgs)->die);
-		(*msgs)->die = NULL;
+		free((*msgs)->dying);
+		(*msgs)->dying = NULL;
 	}
 	free(*msgs);
 	*msgs = NULL;
@@ -115,7 +115,7 @@ t_msgs		*init_msgs(void)
 	msgs->eating = NULL;
 	msgs->sleeping = NULL;
 	msgs->thinking = NULL;
-	msgs->die = NULL;
+	msgs->dying = NULL;
 	if ((msgs->eating = ft_strdup(EATING)) == NULL)
 	{
 		del_msgs(&msgs);
@@ -131,7 +131,7 @@ t_msgs		*init_msgs(void)
 		del_msgs(&msgs);
 		return (NULL);
 	}
-	if ((msgs->die = ft_strdup(DIE)) == NULL)
+	if ((msgs->dying = ft_strdup(DIE)) == NULL)
 	{
 		del_msgs(&msgs);
 		return (NULL);
@@ -169,6 +169,12 @@ t_philo		*init_philos(t_table *table)
 	{
 		philos[i].id = i;
 		philos[i].saying = &(table->saying);
+		philos[i].someone_dead_f = &(table->someone_dead_f);
+		philos[i].start_sim_time = &(table->start_sim_time);
+		philos[i].time_to_die = &(table->args->time_to_die);
+		philos[i].time_to_eat = &(table->args->time_to_eat);
+		philos[i].time_to_sleep = &(table->args->time_to_sleep);
+		philos[i].nb_of_must_eat = &(table->args->nb_of_must_eat);
 		if ((philos[i].msgs = init_msgs()) == NULL)
 		{
 			free(philos);
@@ -188,6 +194,8 @@ void	del_table(t_table **table)
 	del_forks(&((*table)->forks), (*table)->args->nb_of_philos);
 	if ((*table)->args != NULL)
 		free((*table)->args);
+	if ((*table)->saying_mutex_f != 0)
+		pthread_mutex_destroy(&((*table)->saying));
 	free(*table);
 }
 
@@ -222,12 +230,15 @@ t_table	*init_table(int argc, char **argv)
 	table->args = NULL;
 	table->philos = NULL;
 	table->forks = NULL;
+	table->start_sim_time = 0;
+	table->saying_mutex_f = 0;
 
 	if (pthread_mutex_init(&(table->saying), NULL) != 0)
 	{
 		del_table(&table);
 		return (NULL);
 	}
+	table->saying_mutex_f = 1;
 
 	table->args = parse_argumets(argc, argv);
 	if (table->args == NULL)
