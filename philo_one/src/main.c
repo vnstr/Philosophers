@@ -83,7 +83,7 @@ int			main(int argc, char **argv)
 
 	if ((table = init_table(argc, argv)) == NULL)
 		exit_with_arguments_error();
-	print_table(table);
+	//print_table(table);
 	if (start_simulation(table) != 0)
 	{
 		del_table(&table);

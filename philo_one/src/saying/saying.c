@@ -54,7 +54,7 @@ void	say_dying(t_philo *philo)
 	uint64_t	start_simulation;
 
 	start_simulation = *philo->start_sim_time;
-	print_preview(get_sim_mstime(start_simulation), philo->id);
+	print_preview(philo->time_of_death, philo->id);
 	say_msg(philo->msgs->dying);
 }
 

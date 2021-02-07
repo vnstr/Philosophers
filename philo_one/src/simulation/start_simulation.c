@@ -29,63 +29,68 @@ static uint32_t		create_threads(t_table *table)
 	philos = table->philos;
 	trackings = table->trackings;
 	i = 0;
+	j = 0;
 	table->start_sim_time = get_mstime();
 	while (i < amount)
 	{
 		if (pthread_create(&philos[i].thread, NULL, live, (void*)&philos[i]))
 		{
-			ft_putstr_fd(CREATE_THREAD_ERROR, 2); return (i);
+			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
+			return (i + j);
 		}
-		i += 1;
-	}
-	j = 0;
-	while (j < table->trackings_amount)
-	{
 		if (pthread_create(&trackings[j].thread, NULL, track, (void*)&trackings[j]))
 		{
 			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
 			return (i + j);
 		}
+		i += 1;
 		j += 1;
 	}
 	return (i + j);
 }
 
-static uint32_t	join_threads(t_table *table)
+static uint32_t		join_threads(t_table *table)
 {
 	t_philo		*philos;
+	t_tracking	*trackings;
 	uint32_t	amount;
 	uint32_t	i;
+	uint32_t	j;
 
 	amount = table->args->nb_of_philos;
 	philos = table->philos;
+	trackings = table->trackings;
 	i = 0;
+	j = 0;
 	while (i < amount)
 	{
 		if (pthread_join(philos[i].thread, NULL))
 		{
 			ft_putstr_fd(JOIN_THREAD_ERROR, 2);
-			return (i);
+			return (i + j);
+		}
+		if (pthread_join(trackings[j].thread, NULL))
+		{
+			ft_putstr_fd(JOIN_THREAD_ERROR, 2);
+			return (i + j);
 		}
 		i += 1;
+		j += 1;
 	}
-	if (pthread_join(table->trackings->thread, NULL))
-	{
-		ft_putstr_fd(JOIN_THREAD_ERROR, 2);
-		return (i);
-	}
-
-	return (i + 1);
+	return (i + j);
 }
 
-int				start_simulation(t_table *table)
+int					start_simulation(t_table *table)
 {
-	uint32_t	nb_of_threads;
+	uint32_t	nb_of_philo_threads;
+	uint32_t	nb_of_track_threads;
 
-	nb_of_threads = table->args->nb_of_philos;
-	if (create_threads(table) != nb_of_threads + table->trackings_amount)
+	nb_of_philo_threads = table->args->nb_of_philos;
+	nb_of_track_threads = table->trackings_amount;
+
+	if (create_threads(table) != nb_of_philo_threads + nb_of_track_threads)
 		return (1);
-	if (join_threads(table) != nb_of_threads + 1)
+	if (join_threads(table) != nb_of_philo_threads + nb_of_track_threads)
 		return (1);
 	return (0);
 }

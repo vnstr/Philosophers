@@ -96,5 +96,6 @@ void	*live(void *philo_arg)
 		get_thinking(philo);
 		get_eating(philo);
 	}
+	ft_mssleep(philo->id);
 	return (NULL);
 }
