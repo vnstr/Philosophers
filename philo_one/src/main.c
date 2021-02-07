@@ -43,6 +43,8 @@ void	print_table(t_table *table)
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
 
+	printf("\n~~~~~~~~~~philos:\n");
+
 	for (uint32_t i = 0; i < table->args->nb_of_philos; i += 1)
 	{
 		printf("\nphilos_id[%u]:\nleft_fork_id =  |%u|\nleft_right_id = |%u|\n",
@@ -50,6 +52,19 @@ void	print_table(t_table *table)
 				table->philos[i].left_fork->id,
 				table->philos[i].right_fork->id);
 	}
+
+	printf("\n~~~~~~~~~~~~~~~~~\n");
+
+	printf("\n~~~~~~~trackings:\n\n");
+
+	for (uint32_t i = 0; i < table->trackings_amount; i += 1)
+	{
+		printf("trackings[%u].philos[0].id = |%u|\n",
+				i,
+				table->trackings[i].philos[0].id);
+	}
+
+	printf("\n~~~~~~~~~~~~~~~~~\n");
 
 	printf("\n-------------------\n");
 }

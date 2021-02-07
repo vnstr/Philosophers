@@ -25,10 +25,12 @@ int		check_each_eated(t_tracking *tracking)
 {
 	t_philo		*philos;
 	uint64_t	amount_eaten;
+	uint32_t	amount_philos_for_check;
 	uint32_t	i;
 
 	philos = tracking->philos;
 	amount_eaten = 0;
+	if (tracking->args->nb_of_philos <= 4)
 	i = 0;
 	while (i < tracking->args->nb_of_philos)
 	{
@@ -50,7 +52,7 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 
 	philos = tracking->philos;
 	i = 0;
-	while (i < tracking->args->nb_of_philos)
+	while (i < tracking->args->nb_of_philos && i < 1)
 	{
 		if (check_death(&philos[i]))
 		{
@@ -59,7 +61,9 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 		}
 		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
 		{
+			pthread_mutex_lock(tracking->each_eated_f_mutex);
 			*tracking->each_eated_f = 1;
+			pthread_mutex_unlock(tracking->each_eated_f_mutex);
 			break ;
 		}
 		i += 1;

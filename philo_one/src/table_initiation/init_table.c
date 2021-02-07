@@ -101,6 +101,11 @@ void		del_msgs(t_msgs **msgs)
 		free((*msgs)->dying);
 		(*msgs)->dying = NULL;
 	}
+	if ((*msgs)->taking_fork != NULL)
+	{
+		free((*msgs)->taking_fork);
+		(*msgs)->taking_fork = NULL;
+	}
 	free(*msgs);
 	*msgs = NULL;
 }
@@ -204,8 +209,12 @@ void	del_table(t_table **table)
 		free((*table)->args);
 	if ((*table)->saying_mutex_f != 0)
 		pthread_mutex_destroy(&((*table)->saying));
-	if ((*table)->tracking != NULL)
-		free((*table)->tracking);
+	if ((*table)->someone_dead_f_mutex_f != 0)
+		pthread_mutex_destroy(&((*table)->someone_dead_f_mutex));
+	if ((*table)->each_eated_f_mutex_f != 0)
+		pthread_mutex_destroy(&((*table)->each_eated_f_mutex));
+	if ((*table)->trackings != NULL)
+		free((*table)->trackings);
 	free(*table);
 }
 
@@ -231,18 +240,29 @@ void	put_forks_to_philos(t_table *table)
 	}
 }
 
-t_tracking	*init_tracking(t_table *table)
+t_tracking	*init_trackings(t_table *table)
 {
-	t_tracking	*tracking;
+	t_tracking	*trackings;
+	uint32_t	amount;
+	uint32_t	i;
 
-	tracking = (t_tracking*)malloc(sizeof(t_tracking));
-	if (tracking == NULL)
+	amount = table->args->nb_of_philos;
+	table->trackings_amount = amount;
+	trackings = (t_tracking*)malloc(sizeof(t_tracking) * amount);
+	if (trackings == NULL)
 		return (NULL);
-	tracking->args = table->args;
-	tracking->philos = table->philos;
-	tracking->someone_dead_f = &table->someone_dead_f;
-	tracking->each_eated_f = &table->each_eated_f;
-	return (tracking);
+	i = 0;
+	while (i < amount)
+	{
+		trackings[i].args = table->args;
+		trackings[i].philos = table->philos + i;
+		trackings[i].someone_dead_f_mutex = &table->someone_dead_f_mutex;
+		trackings[i].each_eated_f_mutex = &table->each_eated_f_mutex;
+		trackings[i].someone_dead_f = &table->someone_dead_f;
+		trackings[i].each_eated_f = &table->each_eated_f;
+		i += 1;
+	}
+	return (trackings);
 }
 
 t_table	*init_table(int argc, char **argv)
@@ -254,7 +274,7 @@ t_table	*init_table(int argc, char **argv)
 	table->args = NULL;
 	table->forks = NULL;
 	table->philos = NULL;
-	table->tracking = NULL;
+	table->trackings = NULL;
 	table->start_sim_time = 0;
 	table->saying_mutex_f = 0;
 	table->someone_dead_f = 0;
@@ -266,6 +286,20 @@ t_table	*init_table(int argc, char **argv)
 		return (NULL);
 	}
 	table->saying_mutex_f = 1;
+
+	if (pthread_mutex_init(&(table->someone_dead_f_mutex), NULL) != 0)
+	{
+		del_table(&table);
+		return (NULL);
+	}
+	table->someone_dead_f_mutex_f = 1;
+
+	if (pthread_mutex_init(&(table->each_eated_f_mutex), NULL) != 0)
+	{
+		del_table(&table);
+		return (NULL);
+	}
+	table->each_eated_f_mutex_f = 1;
 
 	table->args = parse_argumets(argc, argv);
 	if (table->args == NULL)
@@ -288,8 +322,8 @@ t_table	*init_table(int argc, char **argv)
 		return (NULL);
 	}
 	put_forks_to_philos(table);
-	table->tracking = init_tracking(table);
-	if (table->tracking == NULL)
+	table->trackings = init_trackings(table);
+	if (table->trackings == NULL)
 	{
 		del_table(&table);
 		return (NULL);

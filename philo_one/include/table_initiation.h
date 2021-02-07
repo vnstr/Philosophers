@@ -76,6 +76,8 @@ typedef struct		s_tracking
 	pthread_t		thread;
 	t_input_args	*args;
 	t_philo			*philos;
+	pthread_mutex_t	*someone_dead_f_mutex;
+	pthread_mutex_t	*each_eated_f_mutex;
 	uint8_t			*someone_dead_f;
 	uint8_t			*each_eated_f;
 }					t_tracking;
@@ -85,12 +87,17 @@ typedef struct		s_table
 	t_input_args	*args;
 	t_fork			*forks;
 	t_philo			*philos;
-	t_tracking		*tracking;
+	t_tracking		*trackings;
 	pthread_mutex_t	saying;
+	pthread_mutex_t	someone_dead_f_mutex;
+	pthread_mutex_t	each_eated_f_mutex;
 	uint64_t		start_sim_time;
+	uint32_t		trackings_amount;
 	uint8_t			saying_mutex_f;
 	uint8_t			someone_dead_f;
+	uint8_t			someone_dead_f_mutex_f;
 	uint8_t			each_eated_f;
+	uint8_t			each_eated_f_mutex_f;
 }					t_table;
 
 t_table				*init_table(int argc, char **argv);
