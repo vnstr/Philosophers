@@ -116,6 +116,11 @@ t_msgs		*init_msgs(void)
 	msgs->sleeping = NULL;
 	msgs->thinking = NULL;
 	msgs->dying = NULL;
+	if ((msgs->taking_fork = ft_strdup(TAKING_FORKS)) == NULL)
+	{
+		del_msgs(&msgs);
+		return (NULL);
+	}
 	if ((msgs->eating = ft_strdup(EATING)) == NULL)
 	{
 		del_msgs(&msgs);
@@ -182,7 +187,7 @@ t_philo		*init_philos(t_table *table)
 		philos[i].nb_of_must_eat = &(table->args->nb_of_must_eat);
 		philos[i].last_eating_time = 0;
 		philos[i].eating_counter = 0;
-		philos[i].id = i;
+		philos[i].id = i + 1;
 		i += 1;
 	}
 	return (philos);

@@ -21,8 +21,17 @@ TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
 ##############################     SIMULATION     ##############################
 
 SIMULATION_FILES = start_simulation.c\
-				   live.c\
+				   $(LIVE)\
 				   track.c
+
+#-----------------------------       LIVE         ------------------------------
+
+LIVE_FILE = live.c\
+			forks.c
+
+LIVE = $(addprefix live/, $(LIVE_FILE))
+
+#-------------------------------------------------------------------------------
 
 SIMULATION = $(addprefix simulation/, $(SIMULATION_FILES))
 
@@ -40,7 +49,8 @@ SAYING = $(addprefix saying/, $(SAYING_FILES))
 
 ##############################       UTILS        ##############################
 
-UTILS_FILES = get_time.c
+UTILS_FILES = get_time.c\
+			  ft_mssleep.c
 
 UTILS = $(addprefix utils/, $(UTILS_FILES))
 

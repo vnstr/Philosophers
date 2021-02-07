@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 #include "table_initiation.h"
 #include "simulation.h"
 #include "utils.h"
@@ -41,7 +43,7 @@ int		check_each_eated(t_tracking *tracking)
 
 }
 
-void	check_philos_death(t_tracking *tracking)
+void	check_philos_death_or_each_eated(t_tracking *tracking)
 {
 	t_philo		*philos;
 	uint32_t	i;
@@ -70,6 +72,6 @@ void	*track(void *tracking_arg)
 
 	tracking = (t_tracking*)tracking_arg;
 	while (*tracking->someone_dead_f == 0 && *tracking->each_eated_f == 0)
-		check_philos_death(tracking);
+		check_philos_death_or_each_eated(tracking);
 	return (NULL);
 }

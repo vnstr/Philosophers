@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   forks.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/06 18:43:42 by gdrive            #+#    #+#             */
-/*   Updated: 2021/02/06 18:43:43 by gdrive           ###   ########.fr       */
+/*   Created: 2021/02/07 14:40:39 by gdrive            #+#    #+#             */
+/*   Updated: 2021/02/07 14:43:50 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
+#ifndef FORKS_H
+# define FORKS_H
 
-#include "libft.h"
-#include "table_initiation.h"
-#include "saying.h"
+# include "table_initiation.h"
 
-void	print_preview(uint64_t time, int id)
-{
-	ft_putnbr_fd(time, STDOUT);
-	write(1, " ", 1);
-	ft_putnbr_fd(id, STDOUT);
-}
+void	put_right_fork(t_philo *philo);
+void	put_left_fork(t_philo *philo);
+void	get_right_fork(t_philo *philo);
+void	get_left_fork(t_philo *philo);
+void	get_forks(t_philo *philo);
+void	put_forks(t_philo *philo);
+
+#endif

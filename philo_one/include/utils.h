@@ -18,4 +18,6 @@
 uint64_t	get_mstime(void);
 uint64_t	get_sim_mstime(uint64_t start_sim_time);
 
+void		ft_mssleep(uint64_t mstime);
+
 #endif

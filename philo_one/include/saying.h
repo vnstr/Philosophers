@@ -20,6 +20,7 @@
 void	print_preview(uint64_t time, int id);
 void	say_msg(char *msg);
 
+void	say_taking_fork(t_philo *philo);
 void	say_eating(t_philo *philo);
 void	say_thinking(t_philo *philo);
 void	say_sleeping(t_philo *philo);

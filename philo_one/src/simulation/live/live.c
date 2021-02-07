@@ -18,6 +18,7 @@
 
 #include "libft.h"
 #include "table_initiation.h"
+#include "forks.h"
 #include "saying.h"
 #include "utils.h"
 
@@ -44,7 +45,7 @@ void	get_sleeping(t_philo *philo)
 	}
 	say_sleeping(philo);
 	pthread_mutex_unlock(philo->saying);
-	usleep(*philo->time_to_sleep * 1000);
+	ft_mssleep(*philo->time_to_sleep);
 }
 
 void	get_thinking(t_philo *philo)
@@ -61,23 +62,22 @@ void	get_thinking(t_philo *philo)
 
 void	get_eating(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->left_fork->mutex));
-	pthread_mutex_lock(&(philo->right_fork->mutex));
+	get_forks(philo);
 	pthread_mutex_lock(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
-		pthread_mutex_unlock(&(philo->left_fork->mutex));
-		pthread_mutex_unlock(&(philo->right_fork->mutex));
 		pthread_mutex_unlock(philo->saying);
+		put_forks(philo);
 		return ;
 	}
 	say_eating(philo);
 	pthread_mutex_unlock(philo->saying);
+
 	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
 	philo->eating_counter += 1;
-	usleep(*philo->time_to_eat * 1000);
-	pthread_mutex_unlock(&(philo->left_fork->mutex));
-	pthread_mutex_unlock(&(philo->right_fork->mutex));
+	ft_mssleep(*philo->time_to_eat);
+
+	put_forks(philo);
 }
 
 void	*live(void *philo_arg)

@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   ft_usleep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/06 18:43:42 by gdrive            #+#    #+#             */
-/*   Updated: 2021/02/06 18:43:43 by gdrive           ###   ########.fr       */
+/*   Created: 2021/02/07 15:09:42 by gdrive            #+#    #+#             */
+/*   Updated: 2021/02/07 15:09:44 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <unistd.h>
-#include <stdio.h>
 
-#include "libft.h"
-#include "table_initiation.h"
-#include "saying.h"
+#include "utils.h"
 
-void	print_preview(uint64_t time, int id)
+void	ft_mssleep(uint64_t mstime)
 {
-	ft_putnbr_fd(time, STDOUT);
-	write(1, " ", 1);
-	ft_putnbr_fd(id, STDOUT);
+	uint64_t		start_mstime;
+
+	start_mstime = get_mstime();
+	while (get_mstime() - start_mstime < mstime)
+	{
+		usleep(5);
+	}
 }

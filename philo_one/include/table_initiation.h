@@ -37,13 +37,15 @@ typedef struct		s_fork
 
 # define STDOUT 1
 
-# define EATING ": \"I eat\"\n"
-# define SLEEPING ": \"I sleep\"\n"
-# define THINKING ": \"I think\"\n"
-# define DIE ": \"I am dying\"\n"
+# define TAKING_FORKS " has taken a fork\n"
+# define EATING " is eating\n"
+# define SLEEPING " is sleeping\n"
+# define THINKING " is thinking\n"
+# define DIE " died\n"
 
 typedef struct		s_msgs
 {
+	char			*taking_fork;
 	char			*eating;
 	char			*sleeping;
 	char			*thinking;

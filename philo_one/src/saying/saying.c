@@ -57,3 +57,12 @@ void	say_dying(t_philo *philo)
 	print_preview(get_sim_mstime(start_simulation), philo->id);
 	say_msg(philo->msgs->dying);
 }
+
+void	say_taking_fork(t_philo *philo)
+{
+	uint64_t	start_simulation;
+
+	start_simulation = *philo->start_sim_time;
+	print_preview(get_sim_mstime(start_simulation), philo->id);
+	say_msg(philo->msgs->taking_fork);
+}
