@@ -22,7 +22,8 @@ void		del_table(t_table **table)
 	{
 		del_philos(&((*table)->philos), (*table)->args->nb_of_philos);
 	}
-	del_forks(&((*table)->forks), (*table)->args->nb_of_philos);
+	if ((*table)->forks != NULL)
+		del_forks(&((*table)->forks), (*table)->args->nb_of_philos);
 	if ((*table)->args != NULL)
 		free((*table)->args);
 	if ((*table)->saying_mutex_f != 0)

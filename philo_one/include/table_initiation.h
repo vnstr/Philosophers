@@ -23,11 +23,11 @@
 
 typedef struct		s_input_args
 {
-	uint32_t		nb_of_philos;
-	uint32_t		time_to_die;
-	uint32_t		time_to_eat;
-	uint32_t		time_to_sleep;
-	uint32_t		nb_of_must_eat;
+	int				nb_of_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_of_must_eat;
 }					t_input_args;
 
 t_input_args		*parse_argumets(int argc, char **argv);
@@ -72,10 +72,10 @@ typedef struct		s_philo
 	uint8_t			*someone_dead_f;
 	uint8_t			*each_eated_f;
 	uint64_t		*start_sim_time;
-	uint32_t		*time_to_die;
-	uint32_t		*time_to_eat;
-	uint32_t		*time_to_sleep;
-	uint32_t		*nb_of_must_eat;
+	int				*time_to_die;
+	int				*time_to_eat;
+	int				*time_to_sleep;
+	int				*nb_of_must_eat;
 	uint64_t		last_eating_time;
 	uint64_t		eating_counter;
 	uint64_t		time_of_death;

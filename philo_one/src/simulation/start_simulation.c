@@ -15,11 +15,11 @@
 #include "table_initiation.h"
 #include "utils.h"
 
-static uint32_t		creat_philo_threads(t_table *table)
+static int	creat_philo_threads(t_table *table)
 {
 	t_philo		*philos;
-	uint32_t	amount;
-	uint32_t	i;
+	int			amount;
+	int			i;
 
 	philos = table->philos;
 	amount = table->args->nb_of_philos;
@@ -36,11 +36,11 @@ static uint32_t		creat_philo_threads(t_table *table)
 	return (i);
 }
 
-static uint32_t		create_threads(t_table *table)
+static int	create_threads(t_table *table)
 {
 	t_tracking	*tracking;
-	uint32_t	nb_of_philos;
-	uint32_t	created_amount;
+	int			nb_of_philos;
+	int			created_amount;
 
 	tracking = table->tracking;
 	nb_of_philos = table->args->nb_of_philos;
@@ -55,11 +55,11 @@ static uint32_t		create_threads(t_table *table)
 	return (created_amount + 1);
 }
 
-static uint32_t		join_philo_threads(t_table *table)
+static int	join_philo_threads(t_table *table)
 {
 	t_philo		*philos;
-	uint32_t	amount;
-	uint32_t	i;
+	int			amount;
+	int			i;
 
 	philos = table->philos;
 	amount = table->args->nb_of_philos;
@@ -76,7 +76,7 @@ static uint32_t		join_philo_threads(t_table *table)
 	return (i);
 }
 
-static uint32_t		join_threads(t_table *table)
+static int	join_threads(t_table *table)
 {
 	t_tracking	*tracking;
 	uint32_t	nb_of_philos;
@@ -94,9 +94,9 @@ static uint32_t		join_threads(t_table *table)
 	return (joined_amount + 1);
 }
 
-int					start_simulation(t_table *table)
+int			start_simulation(t_table *table)
 {
-	uint32_t	nb_of_philo_threads;
+	int			nb_of_philo_threads;
 
 	nb_of_philo_threads = table->args->nb_of_philos;
 	if (create_threads(table) != nb_of_philo_threads + 1)

@@ -45,7 +45,7 @@ void	print_table(t_table *table)
 
 	printf("\n~~~~~~~~~~philos:\n");
 
-	for (uint32_t i = 0; i < table->args->nb_of_philos; i += 1)
+	for (int32_t i = 0; i < table->args->nb_of_philos; i += 1)
 	{
 		printf("\nphilos_id[%u]:\nleft_fork_id =  |%u|\nleft_right_id = |%u|\n",
 				table->philos[i].id,
@@ -65,12 +65,6 @@ void	print_table(t_table *table)
 	printf("\n-------------------\n");
 }
 
-static void	exit_with_arguments_error(void)
-{
-	write(2, "Error: not valid argumets\n", 27);
-	exit(1);
-}
-
 # include <sys/time.h>
 
 int			main(int argc, char **argv)
@@ -78,7 +72,7 @@ int			main(int argc, char **argv)
 	t_table		*table;
 
 	if ((table = init_table(argc, argv)) == NULL)
-		exit_with_arguments_error();
+		return (1);
 	print_table(table);
 	if (start_simulation(table) != 0)
 	{

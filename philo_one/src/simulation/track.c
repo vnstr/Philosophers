@@ -27,19 +27,21 @@ int		check_each_eated(t_tracking *tracking)
 {
 	t_philo		*philos;
 	uint64_t	amount_eaten;
-	uint32_t	amount_philos;
-	uint32_t	i;
+	int			amount_philos;
+	int			nb_of_must_eat;
+	int			i;
 
 	philos = tracking->philos;
 	amount_eaten = 0;
 	amount_philos = tracking->args->nb_of_philos;
+	nb_of_must_eat = tracking->args->nb_of_must_eat;
 	i = 0;
 	while (i < amount_philos)
 	{
 		amount_eaten += philos[i].eating_counter;
 		i += 1;
 	}
-	if (amount_eaten >= tracking->args->nb_of_must_eat * amount_philos)
+	if (amount_eaten >= (uint64_t)(nb_of_must_eat * amount_philos))
 		return (1);
 	return (0);
 }
@@ -47,7 +49,7 @@ int		check_each_eated(t_tracking *tracking)
 void	check_philos_death_or_each_eated(t_tracking *tracking)
 {
 	t_philo		*philos;
-	uint32_t	i;
+	int			i;
 
 	philos = tracking->philos;
 	i = 0;
