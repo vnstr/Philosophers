@@ -80,6 +80,8 @@ typedef struct		s_philo
 	uint64_t		eating_counter;
 	uint64_t		time_of_death;
 	int				id;
+
+	pthread_mutex_t	*turn;
 }					t_philo;
 
 typedef struct		s_tracking
@@ -97,11 +99,11 @@ typedef struct		s_table
 	t_input_args	*args;
 	t_fork			*forks;
 	t_philo			*philos;
-	t_tracking		*trackings;
+	t_tracking		*tracking;
+	pthread_mutex_t	turn;
 	pthread_mutex_t	saying;
 	pthread_mutex_t	each_eated_f_mutex;
 	uint64_t		start_sim_time;
-	uint32_t		trackings_amount;
 	uint8_t			saying_mutex_f;
 	uint8_t			someone_dead_f;
 	uint8_t			each_eated_f;
@@ -111,7 +113,7 @@ typedef struct		s_table
 void				del_philos(t_philo **philos, uint32_t amount);
 t_philo				*init_philos(t_table *table);
 
-t_tracking			*init_trackings(t_table *table);
+t_tracking			*init_tracking(t_table *table);
 
 t_table				*init_table(int argc, char **argv);
 void				del_table(t_table **table);

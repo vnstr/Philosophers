@@ -55,14 +55,10 @@ void	print_table(t_table *table)
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
 
-	printf("\n~~~~~~~trackings:\n\n");
+	printf("\n~~~~~~~tracking:\n\n");
 
-	for (uint32_t i = 0; i < table->trackings_amount; i += 1)
-	{
-		printf("trackings[%u].philos[0].id = |%u|\n",
-				i,
-				table->trackings[i].philos[0].id);
-	}
+		printf("tracking->philos[0].id = |%u|\n",
+				table->tracking->philos[0].id);
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
 
@@ -83,7 +79,7 @@ int			main(int argc, char **argv)
 
 	if ((table = init_table(argc, argv)) == NULL)
 		exit_with_arguments_error();
-	//print_table(table);
+	print_table(table);
 	if (start_simulation(table) != 0)
 	{
 		del_table(&table);

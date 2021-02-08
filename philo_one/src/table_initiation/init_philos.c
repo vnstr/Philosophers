@@ -59,6 +59,10 @@ t_philo		*init_philos(t_table *table)
 		philos[i].eating_counter = 0;
 		philos[i].time_of_death = 0;
 		philos[i].id = i + 1;
+
+
+		philos[i].turn = &(table->turn);
+
 		i += 1;
 	}
 	return (philos);

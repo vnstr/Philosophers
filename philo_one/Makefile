@@ -17,7 +17,7 @@ TABLE_INITIATION_FILES = init_table.c\
 						 init_forks.c\
 						 init_msgs.c\
 						 init_philos.c\
-						 init_trackings.c\
+						 init_tracking.c\
 						 put_forks_to_philos.c
 
 TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))

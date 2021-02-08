@@ -29,8 +29,8 @@ void		del_table(t_table **table)
 		pthread_mutex_destroy(&((*table)->saying));
 	if ((*table)->each_eated_f_mutex_f != 0)
 		pthread_mutex_destroy(&((*table)->each_eated_f_mutex));
-	if ((*table)->trackings != NULL)
-		free((*table)->trackings);
+	if ((*table)->tracking != NULL)
+		free((*table)->tracking);
 	free(*table);
 }
 
@@ -55,7 +55,7 @@ static int	init_env(t_table *table, int argc, char **argv)
 		return (1);
 	if ((table->philos = init_philos(table)) == NULL)
 		return (1);
-	if ((table->trackings = init_trackings(table)) == NULL)
+	if ((table->tracking = init_tracking(table)) == NULL)
 		return (1);
 	put_forks_to_philos(table);
 	return (0);
@@ -70,7 +70,10 @@ t_table		*init_table(int argc, char **argv)
 	table->args = NULL;
 	table->forks = NULL;
 	table->philos = NULL;
-	table->trackings = NULL;
+	table->tracking = NULL;
+
+	pthread_mutex_init(&(table->turn), NULL);
+
 	table->start_sim_time = 0;
 	table->saying_mutex_f = 0;
 	table->someone_dead_f = 0;

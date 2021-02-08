@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include <unistd.h>
 
 #include "libft.h"
 #include "simulation.h"
@@ -20,77 +21,74 @@
 static uint32_t		create_threads(t_table *table)
 {
 	t_philo		*philos;
-	t_tracking	*trackings;
+	t_tracking	*tracking;
 	uint32_t	amount;
 	uint32_t	i;
 	uint32_t	j;
 
 	amount = table->args->nb_of_philos;
 	philos = table->philos;
-	trackings = table->trackings;
+	tracking = table->tracking;
 	i = 0;
 	j = 0;
-	table->start_sim_time = get_mstime();
+	pthread_mutex_lock(&table->turn);
 	while (i < amount)
 	{
+		table->start_sim_time = get_mstime();
 		if (pthread_create(&philos[i].thread, NULL, live, (void*)&philos[i]))
 		{
 			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
-			return (i + j);
-		}
-		if (pthread_create(&trackings[j].thread, NULL, track, (void*)&trackings[j]))
-		{
-			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
-			return (i + j);
+			return (i);
 		}
 		i += 1;
-		j += 1;
 	}
-	return (i + j);
+	if (pthread_create(&tracking->thread, NULL, track, (void*)tracking))
+	{
+		ft_putstr_fd(CREATE_THREAD_ERROR, 2);
+		return (i);
+	}
+	table->start_sim_time = get_mstime();
+	pthread_mutex_unlock(&table->turn);
+	return (i + 1);
 }
 
 static uint32_t		join_threads(t_table *table)
 {
 	t_philo		*philos;
-	t_tracking	*trackings;
+	t_tracking	*tracking;
 	uint32_t	amount;
 	uint32_t	i;
-	uint32_t	j;
 
 	amount = table->args->nb_of_philos;
 	philos = table->philos;
-	trackings = table->trackings;
+	tracking = table->tracking;
 	i = 0;
-	j = 0;
 	while (i < amount)
 	{
 		if (pthread_join(philos[i].thread, NULL))
 		{
 			ft_putstr_fd(JOIN_THREAD_ERROR, 2);
-			return (i + j);
-		}
-		if (pthread_join(trackings[j].thread, NULL))
-		{
-			ft_putstr_fd(JOIN_THREAD_ERROR, 2);
-			return (i + j);
+			return (i);
 		}
 		i += 1;
-		j += 1;
 	}
-	return (i + j);
+	if (pthread_join(tracking->thread, NULL))
+	{
+		ft_putstr_fd(JOIN_THREAD_ERROR, 2);
+		return (i);
+	}
+	return (i + 1);
 }
 
 int					start_simulation(t_table *table)
 {
 	uint32_t	nb_of_philo_threads;
-	uint32_t	nb_of_track_threads;
 
 	nb_of_philo_threads = table->args->nb_of_philos;
-	nb_of_track_threads = table->trackings_amount;
 
-	if (create_threads(table) != nb_of_philo_threads + nb_of_track_threads)
+	if (create_threads(table) != nb_of_philo_threads + 1)
 		return (1);
-	if (join_threads(table) != nb_of_philo_threads + nb_of_track_threads)
+	if (join_threads(table) != nb_of_philo_threads + 1)
 		return (1);
 	return (0);
 }

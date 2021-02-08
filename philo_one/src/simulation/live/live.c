@@ -89,7 +89,14 @@ void	*live(void *philo_arg)
 	philo = (t_philo*)philo_arg;
 	someone_dead_f = philo->someone_dead_f;
 	each_eated_f = philo->each_eated_f;
-	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
+
+	pthread_mutex_lock(philo->turn);
+	pthread_mutex_unlock(philo->turn);
+
+	if (philo->id % 2)
+		ft_mssleep(100);
+
+	*philo->start_sim_time = get_mstime();
 	while (*someone_dead_f == 0 && *each_eated_f == 0)
 	{
 		get_sleeping(philo);
