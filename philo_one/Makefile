@@ -55,17 +55,17 @@ SAYING = $(addprefix saying/, $(SAYING_FILES))
 
 ##############################       UTILS        ##############################
 
-UTILS_FILES = get_time.c\
+UTILS_FILES = ft_strlen.c\
+			  ft_memcmp.c\
+			  ft_atoi.c\
+			  ft_putchar_fd.c\
+			  ft_putstr_fd.c\
+			  ft_putnbr_fd.c\
+			  ft_strdup.c\
+			  get_time.c\
 			  ft_mssleep.c
 
 UTILS = $(addprefix utils/, $(UTILS_FILES))
-
-################################################################################
-
-###################################  LIBS  #####################################
-
-LIBFT_DIR = src/libft/
-LIBS = $(LIBFT_DIR)libft.a
 
 ################################################################################
 
@@ -79,27 +79,22 @@ SEGINFOFLAG = -fsanitize=address
 INCLD = include/
 
 .c.o:
-	$(CC) -I$(INCLD) -c $< -o $(<:.c=.o)
-	@#$(CC) $(CFLAGS) -I$(INCLD) -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I$(INCLD) -c $< -o $(<:.c=.o)
 
 ################################################################################
 
 #############################  MANDATORY COMMANDS  #############################
 
 $(NAME): $(OBJ)
-	make -C $(LIBFT_DIR)
-	$(CC) $(OBJ) $(LIBS) -o $(NAME)
-	@#$(CC) $(CFLAGS) $(LIBS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 all: $(NAME)
 
 clean:
 	rm -rf $(OBJ)
-	make clean -C $(LIBFT_DIR)
 
 fclean: clean
 	rm -rf $(NAME)
-	make fclean -C $(LIBFT_DIR)
 
 re:	fclean	all
 
@@ -108,8 +103,7 @@ re:	fclean	all
 ###############################  BONUS COMMANDS  ##############################
 
 debug: $(OBJ)
-	#make -C $(LIBFT_DIR)
-	$(CC) $(CFLAGS) $(SEGINFOFLAG) $(LIBS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(SEGINFOFLAG) $(OBJ) -o $(NAME)
 
 SHELL = /bin/zsh
 norm:

@@ -10,17 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-
 #include "table_initiation.h"
 #include "saying.h"
-#include "libft.h"
 #include "utils.h"
-
-void	say_msg(char *msg)
-{
-	write(1, msg, ft_strlen(msg));
-}
 
 void	say_eating(t_philo *philo)
 {

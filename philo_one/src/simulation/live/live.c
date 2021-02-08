@@ -10,19 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include <stdint.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdbool.h>
-
-#include "libft.h"
 #include "table_initiation.h"
 #include "forks.h"
 #include "saying.h"
 #include "utils.h"
 
-void	get_dying(t_philo *philo)
+void		get_dying(t_philo *philo)
 {
 	pthread_mutex_lock(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
@@ -35,7 +28,7 @@ void	get_dying(t_philo *philo)
 	pthread_mutex_unlock(philo->saying);
 }
 
-void	get_sleeping(t_philo *philo)
+static void	get_sleeping(t_philo *philo)
 {
 	pthread_mutex_lock(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
@@ -48,7 +41,7 @@ void	get_sleeping(t_philo *philo)
 	ft_mssleep(*philo->time_to_sleep);
 }
 
-void	get_thinking(t_philo *philo)
+static void	get_thinking(t_philo *philo)
 {
 	pthread_mutex_lock(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
@@ -60,7 +53,7 @@ void	get_thinking(t_philo *philo)
 	pthread_mutex_unlock(philo->saying);
 }
 
-void	get_eating(t_philo *philo)
+static void	get_eating(t_philo *philo)
 {
 	get_forks(philo);
 	pthread_mutex_lock(philo->saying);
@@ -72,15 +65,13 @@ void	get_eating(t_philo *philo)
 	}
 	say_eating(philo);
 	pthread_mutex_unlock(philo->saying);
-
 	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
 	philo->eating_counter += 1;
 	ft_mssleep(*philo->time_to_eat);
-
 	put_forks(philo);
 }
 
-void	*live(void *philo_arg)
+void		*live(void *philo_arg)
 {
 	t_philo		*philo;
 	uint8_t		*someone_dead_f;
@@ -89,14 +80,8 @@ void	*live(void *philo_arg)
 	philo = (t_philo*)philo_arg;
 	someone_dead_f = philo->someone_dead_f;
 	each_eated_f = philo->each_eated_f;
-
-	pthread_mutex_lock(philo->turn);
-	pthread_mutex_unlock(philo->turn);
-
 	if (philo->id % 2)
-		ft_mssleep(100);
-
-	*philo->start_sim_time = get_mstime();
+		ft_mssleep(60);
 	while (*someone_dead_f == 0 && *each_eated_f == 0)
 	{
 		get_sleeping(philo);

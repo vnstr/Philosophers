@@ -100,7 +100,6 @@ typedef struct		s_table
 	t_fork			*forks;
 	t_philo			*philos;
 	t_tracking		*tracking;
-	pthread_mutex_t	turn;
 	pthread_mutex_t	saying;
 	pthread_mutex_t	each_eated_f_mutex;
 	uint64_t		start_sim_time;

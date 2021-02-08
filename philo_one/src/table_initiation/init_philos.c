@@ -29,6 +29,21 @@ void		del_philos(t_philo **philos, uint32_t amount)
 	*philos = NULL;
 }
 
+void		init_params(t_philo *philo, t_table *table)
+{
+	philo->saying = &(table->saying);
+	philo->someone_dead_f = &(table->someone_dead_f);
+	philo->each_eated_f = &(table->each_eated_f);
+	philo->start_sim_time = &(table->start_sim_time);
+	philo->time_to_die = &(table->args->time_to_die);
+	philo->time_to_eat = &(table->args->time_to_eat);
+	philo->time_to_sleep = &(table->args->time_to_sleep);
+	philo->nb_of_must_eat = &(table->args->nb_of_must_eat);
+	philo->last_eating_time = 0;
+	philo->eating_counter = 0;
+	philo->time_of_death = 0;
+}
+
 t_philo		*init_philos(t_table *table)
 {
 	t_philo		*philos;
@@ -42,27 +57,13 @@ t_philo		*init_philos(t_table *table)
 	i = 0;
 	while (i < amount)
 	{
+		philos[i].id = i + 1;
 		if ((philos[i].msgs = init_msgs()) == NULL)
 		{
 			free(philos);
 			return (NULL);
 		}
-		philos[i].saying = &(table->saying);
-		philos[i].someone_dead_f = &(table->someone_dead_f);
-		philos[i].each_eated_f = &(table->each_eated_f);
-		philos[i].start_sim_time = &(table->start_sim_time);
-		philos[i].time_to_die = &(table->args->time_to_die);
-		philos[i].time_to_eat = &(table->args->time_to_eat);
-		philos[i].time_to_sleep = &(table->args->time_to_sleep);
-		philos[i].nb_of_must_eat = &(table->args->nb_of_must_eat);
-		philos[i].last_eating_time = 0;
-		philos[i].eating_counter = 0;
-		philos[i].time_of_death = 0;
-		philos[i].id = i + 1;
-
-
-		philos[i].turn = &(table->turn);
-
+		init_params(&philos[i], table);
 		i += 1;
 	}
 	return (philos);

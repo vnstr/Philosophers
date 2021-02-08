@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
 
-#include "libft.h"
+#include "utils.h"
 #include "table_initiation.h"
 #include "saying.h"
 
@@ -22,4 +21,9 @@ void	print_preview(uint64_t time, int id)
 	ft_putnbr_fd(time, STDOUT);
 	write(1, " ", 1);
 	ft_putnbr_fd(id, STDOUT);
+}
+
+void	say_msg(char *msg)
+{
+	write(1, msg, ft_strlen(msg));
 }

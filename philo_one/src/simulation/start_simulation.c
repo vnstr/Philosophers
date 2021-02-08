@@ -10,31 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <unistd.h>
-
-#include "libft.h"
+#include "utils.h"
 #include "simulation.h"
 #include "table_initiation.h"
 #include "utils.h"
 
-static uint32_t		create_threads(t_table *table)
+static uint32_t		creat_philo_threads(t_table *table)
 {
 	t_philo		*philos;
-	t_tracking	*tracking;
 	uint32_t	amount;
 	uint32_t	i;
-	uint32_t	j;
 
-	amount = table->args->nb_of_philos;
 	philos = table->philos;
-	tracking = table->tracking;
+	amount = table->args->nb_of_philos;
 	i = 0;
-	j = 0;
-	pthread_mutex_lock(&table->turn);
 	while (i < amount)
 	{
-		table->start_sim_time = get_mstime();
 		if (pthread_create(&philos[i].thread, NULL, live, (void*)&philos[i]))
 		{
 			ft_putstr_fd(CREATE_THREAD_ERROR, 2);
@@ -42,26 +33,36 @@ static uint32_t		create_threads(t_table *table)
 		}
 		i += 1;
 	}
+	return (i);
+}
+
+static uint32_t		create_threads(t_table *table)
+{
+	t_tracking	*tracking;
+	uint32_t	nb_of_philos;
+	uint32_t	created_amount;
+
+	tracking = table->tracking;
+	nb_of_philos = table->args->nb_of_philos;
+	table->start_sim_time = get_mstime();
+	if ((created_amount = creat_philo_threads(table)) != nb_of_philos)
+		return (created_amount);
 	if (pthread_create(&tracking->thread, NULL, track, (void*)tracking))
 	{
 		ft_putstr_fd(CREATE_THREAD_ERROR, 2);
-		return (i);
+		return (created_amount);
 	}
-	table->start_sim_time = get_mstime();
-	pthread_mutex_unlock(&table->turn);
-	return (i + 1);
+	return (created_amount + 1);
 }
 
-static uint32_t		join_threads(t_table *table)
+static uint32_t		join_philo_threads(t_table *table)
 {
 	t_philo		*philos;
-	t_tracking	*tracking;
 	uint32_t	amount;
 	uint32_t	i;
 
-	amount = table->args->nb_of_philos;
 	philos = table->philos;
-	tracking = table->tracking;
+	amount = table->args->nb_of_philos;
 	i = 0;
 	while (i < amount)
 	{
@@ -72,12 +73,25 @@ static uint32_t		join_threads(t_table *table)
 		}
 		i += 1;
 	}
+	return (i);
+}
+
+static uint32_t		join_threads(t_table *table)
+{
+	t_tracking	*tracking;
+	uint32_t	nb_of_philos;
+	uint32_t	joined_amount;
+
+	tracking = table->tracking;
+	nb_of_philos = table->args->nb_of_philos;
+	if ((joined_amount = join_philo_threads(table)) != nb_of_philos)
+		return (joined_amount);
 	if (pthread_join(tracking->thread, NULL))
 	{
 		ft_putstr_fd(JOIN_THREAD_ERROR, 2);
-		return (i);
+		return (joined_amount);
 	}
-	return (i + 1);
+	return (joined_amount + 1);
 }
 
 int					start_simulation(t_table *table)
@@ -85,7 +99,6 @@ int					start_simulation(t_table *table)
 	uint32_t	nb_of_philo_threads;
 
 	nb_of_philo_threads = table->args->nb_of_philos;
-
 	if (create_threads(table) != nb_of_philo_threads + 1)
 		return (1);
 	if (join_threads(table) != nb_of_philo_threads + 1)

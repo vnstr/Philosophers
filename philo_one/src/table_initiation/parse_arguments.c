@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.h"
 #include "table_initiation.h"
 
 t_input_args	*parse_argumets(int argc, char **argv)

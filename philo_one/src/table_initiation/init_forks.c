@@ -13,10 +13,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "libft.h"
+#include "utils.h"
 #include "table_initiation.h"
 
-void		del_forks(t_fork **forks, uint32_t amount)
+void			del_forks(t_fork **forks, uint32_t amount)
 {
 	uint32_t	i;
 
@@ -31,7 +31,7 @@ void		del_forks(t_fork **forks, uint32_t amount)
 	(*forks) = NULL;
 }
 
-static void	init_id_and_mutex_f(t_fork *forks, uint32_t amount)
+static void		init_id_and_mutex_f(t_fork *forks, uint32_t amount)
 {
 	uint32_t	i;
 
@@ -44,7 +44,7 @@ static void	init_id_and_mutex_f(t_fork *forks, uint32_t amount)
 	}
 }
 
-static int	init_mutexs(t_fork *forks, uint32_t amount)
+static uint32_t	init_mutexs(t_fork *forks, uint32_t amount)
 {
 	uint32_t	i;
 
@@ -59,10 +59,9 @@ static int	init_mutexs(t_fork *forks, uint32_t amount)
 	return (i);
 }
 
-t_fork		*init_forks(uint32_t amount)
+t_fork			*init_forks(uint32_t amount)
 {
 	t_fork			*forks;
-	uint32_t		i;
 
 	forks = (t_fork*)malloc(sizeof(t_fork) * amount);
 	if (forks == NULL)

@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 
-#include "libft.h"
+#include "utils.h"
 #include "table_initiation.h"
 
 void		del_msgs(t_msgs **msgs)

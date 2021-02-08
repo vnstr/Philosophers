@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrstrs_len_bonus.c                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdrive <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/27 18:02:21 by gdrive            #+#    #+#             */
-/*   Updated: 2020/12/17 19:58:30 by gdrive           ###   ########.fr       */
+/*   Created: 2020/07/20 10:24:16 by gdrive            #+#    #+#             */
+/*   Updated: 2020/11/05 09:58:44 by gdrive           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-size_t	ft_arrstrs_len(char **arr)
+size_t		ft_strlen(const char *s)
 {
-	size_t	len;
+	size_t	i;
 
-	if (arr == NULL)
-		return (0);
-	len = 0;
-	while (arr[len] != NULL)
-		len++;
-	return (len);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

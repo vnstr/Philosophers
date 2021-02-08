@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "libft.h"
+#include "utils.h"
 #include "table_initiation.h"
 
 void		del_table(t_table **table)
@@ -71,9 +71,6 @@ t_table		*init_table(int argc, char **argv)
 	table->forks = NULL;
 	table->philos = NULL;
 	table->tracking = NULL;
-
-	pthread_mutex_init(&(table->turn), NULL);
-
 	table->start_sim_time = 0;
 	table->saying_mutex_f = 0;
 	table->someone_dead_f = 0;
