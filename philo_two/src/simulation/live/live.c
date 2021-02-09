@@ -59,6 +59,15 @@ static void	get_eating(t_philo *philo)
 	sem_wait(philo->forks->sem);
 
 	sem_wait(philo->saying);
+
+
+	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
+	{
+		sem_post(philo->saying);
+		sem_post(philo->forks->sem);
+		return ;
+	}
+
 	say_taking_fork(philo);
 	sem_post(philo->saying);
 
@@ -66,9 +75,9 @@ static void	get_eating(t_philo *philo)
 
 	sem_wait(philo->saying);
 	say_taking_fork(philo);
-	sem_post(philo->saying);
+	//sem_post(philo->saying);
 
-	sem_wait(philo->saying);
+	//sem_wait(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
 		sem_post(philo->saying);
@@ -78,12 +87,16 @@ static void	get_eating(t_philo *philo)
 	}
 	say_eating(philo);
 	sem_post(philo->saying);
+
 	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
 	philo->eating_counter += 1;
 	ft_mssleep(*philo->time_to_eat);
+
 	sem_post(philo->forks->sem);
 	sem_post(philo->forks->sem);
 }
+
+#include <stdio.h>
 
 void		*live(void *philo_arg)
 {
@@ -94,14 +107,16 @@ void		*live(void *philo_arg)
 	philo = (t_philo*)philo_arg;
 	someone_dead_f = philo->someone_dead_f;
 	each_eated_f = philo->each_eated_f;
-	//if (philo->id % 2)
-		//ft_mssleep(60);
+	if (philo->id % 2)
+		ft_mssleep(60);
 	while (*someone_dead_f == 0 && *each_eated_f == 0)
 	{
 		get_sleeping(philo);
 		get_thinking(philo);
 		get_eating(philo);
+		//printf("LIVE LOOP\n");
 	}
 	ft_mssleep(philo->id);
+	//printf("LIVE RETURNED\n");
 	return (NULL);
 }
