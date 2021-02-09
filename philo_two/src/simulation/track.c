@@ -62,9 +62,7 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 			break ;
 		}
 		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
-		{
 			*tracking->each_eated_f = 1;
-		}
 		i += 1;
 	}
 }

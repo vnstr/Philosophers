@@ -41,7 +41,6 @@ typedef struct		s_fork
 {
 	sem_t			*sem;
 	uint8_t			sem_f;
-	int				id;
 }					t_fork;
 
 void				del_forks(t_fork **forks);
@@ -115,7 +114,5 @@ t_tracking			*init_tracking(t_table *table);
 
 t_table				*init_table(int argc, char **argv);
 void				del_table(t_table **table);
-
-void				put_forks_to_philos(t_table *table);
 
 #endif

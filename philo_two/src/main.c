@@ -71,8 +71,6 @@ int			main(int argc, char **argv)
 {
 	t_table		*table;
 
-	sem_unlink(SAYNG_SEM);
-	sem_unlink(FORKS_SEM);
 	if ((table = init_table(argc, argv)) == NULL)
 		return (1);
 	print_table(table);

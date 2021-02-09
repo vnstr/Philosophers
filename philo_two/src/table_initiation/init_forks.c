@@ -37,7 +37,9 @@ t_fork			*init_forks(uint32_t amount)
 	if (forks == NULL)
 		return (NULL);
 	forks->sem_f = 0;
-	if((forks->sem = sem_open(FORKS_SEM, O_CREAT | O_EXCL, 066, amount)) == SEM_FAILED)
+	sem_unlink(FORKS_SEM);
+	if ((forks->sem = sem_open(FORKS_SEM, O_CREAT | O_EXCL, 066, amount))
+			== SEM_FAILED)
 	{
 		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
 		del_forks(&forks);

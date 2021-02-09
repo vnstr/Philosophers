@@ -13,30 +13,32 @@
 #include "table_initiation.h"
 #include "saying.h"
 
-void	get_right_fork(t_philo *philo)
+static int	get_fork(t_philo *philo)
 {
+	sem_wait(philo->forks->sem);
+	sem_wait(philo->saying);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
-		return ;
+		sem_post(philo->forks->sem);
+		sem_post(philo->saying);
+		return (1);
 	}
 	say_taking_fork(philo);
+	sem_post(philo->saying);
+	return (0);
 }
 
-void	get_left_fork(t_philo *philo)
+void		put_forks(t_philo *philo)
 {
-	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
-	{
-		return ;
-	}
-	say_taking_fork(philo);
+	sem_post(philo->forks->sem);
+	sem_post(philo->forks->sem);
 }
 
-void	get_forks(t_philo *philo)
+int			get_forks(t_philo *philo)
 {
-	get_left_fork(philo);
-	get_right_fork(philo);
-}
-
-void	put_forks(t_philo *philo)
-{
+	if (get_fork(philo) != 0)
+		return (1);
+	if (get_fork(philo) != 0)
+		return (1);
+	return (0);
 }

@@ -15,11 +15,7 @@
 
 # include "table_initiation.h"
 
-void	put_right_fork(t_philo *philo);
-void	put_left_fork(t_philo *philo);
-void	get_right_fork(t_philo *philo);
-void	get_left_fork(t_philo *philo);
-void	get_forks(t_philo *philo);
+int		get_forks(t_philo *philo);
 void	put_forks(t_philo *philo);
 
 #endif

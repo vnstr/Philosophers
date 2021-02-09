@@ -19,9 +19,7 @@
 void		del_table(t_table **table)
 {
 	if ((*table)->philos != NULL)
-	{
 		del_philos(&((*table)->philos), (*table)->args->nb_of_philos);
-	}
 	if ((*table)->forks != NULL)
 		del_forks(&((*table)->forks));
 	if ((*table)->args != NULL)
@@ -38,7 +36,9 @@ void		del_table(t_table **table)
 
 static int	init_sems(t_table *table)
 {
-	if ((table->saying = sem_open(SAYNG_SEM, O_CREAT | O_EXCL, 066, 1)) == SEM_FAILED)
+	sem_unlink(SAYNG_SEM);
+	if ((table->saying = sem_open(SAYNG_SEM, O_CREAT | O_EXCL, 066, 1))
+			== SEM_FAILED)
 	{
 		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
 		return (1);
@@ -59,7 +59,6 @@ static int	init_env(t_table *table, int argc, char **argv)
 		return (1);
 	if ((table->tracking = init_tracking(table)) == NULL)
 		return (1);
-	put_forks_to_philos(table);
 	return (0);
 }
 
