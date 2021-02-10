@@ -25,57 +25,52 @@ int		check_death(t_philo *philo)
 
 int		check_each_eated(t_tracking *tracking)
 {
-	t_philo		*philos;
+	t_philo		*philo;
 	uint64_t	amount_eaten;
 	int			amount_philos;
 	int			nb_of_must_eat;
 	int			i;
 
-	philos = tracking->philos;
+	philo = tracking->philo;
 	amount_eaten = 0;
 	amount_philos = tracking->args->nb_of_philos;
 	nb_of_must_eat = tracking->args->nb_of_must_eat;
 	i = 0;
-	while (i < amount_philos)
-	{
-		amount_eaten += philos[i].eating_counter;
-		i += 1;
-	}
-	if (amount_eaten >= (uint64_t)(nb_of_must_eat * amount_philos))
-		return (1);
 	return (0);
 }
 
 void	check_philos_death_or_each_eated(t_tracking *tracking)
 {
-	t_philo		*philos;
+	t_philo		*philo;
 	int			i;
 
-	philos = tracking->philos;
+	philo = tracking->philo;
 	i = 0;
-	while (i < tracking->args->nb_of_philos)
+	/*
+	if (check_death(philo))
 	{
-		if (check_death(&philos[i]))
-		{
-			philos[i].time_of_death = get_sim_mstime(*philos[i].start_sim_time);
-			get_dying(&philos[i]);
-			break ;
-		}
-		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
-			*tracking->each_eated_f = 1;
-		i += 1;
+		philo->time_of_death = get_sim_mstime(*philo->start_sim_time);
+		get_dying(philo);
 	}
+	*/
+	//if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
+		//*tracking->each_eated_f = 1;
+	i += 1;
 }
 
-int		track(void *tracking_arg)
+#include <stdio.h>
+
+void	*track(void *tracking_arg)
 {
 	t_tracking	*tracking;
 
+	//printf("tracking_arg_p = |%p|\n", tracking_arg);
 	tracking = (t_tracking*)tracking_arg;
+	printf("tracking->philo->id = |%d|\n", tracking->philo->id);
 	/*
 	while (*tracking->someone_dead_f == 0 && *tracking->each_eated_f == 0)
 		check_philos_death_or_each_eated(tracking);
-	*/
-	sleep(10);
-	return (0);
+		*/
+	//sleep(10);
+	return (NULL);
 }

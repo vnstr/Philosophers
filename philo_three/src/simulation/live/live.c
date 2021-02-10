@@ -72,6 +72,7 @@ static void	get_eating(t_philo *philo)
 }
 
 #include <unistd.h>
+#include <stdio.h>
 
 int			live(void *philo_arg)
 {
@@ -80,16 +81,20 @@ int			live(void *philo_arg)
 	uint8_t		*each_eated_f;
 
 	philo = (t_philo*)philo_arg;
+	sem_wait(philo->saying);
+	printf("philo->id = |%d|\n", philo->id);
+	sem_post(philo->saying);
+	sleep(5);
+	exit(0);
 	someone_dead_f = philo->someone_dead_f;
 	each_eated_f = philo->each_eated_f;
 	if (philo->id % 2)
 		ft_mssleep(60, philo);
 	while (*someone_dead_f == 0 && *each_eated_f == 0)
 	{
-		get_sleeping(philo);
-		get_thinking(philo);
-		get_eating(philo);
-		break ;
+		//get_sleeping(philo);
+		//get_thinking(philo);
+		//get_eating(philo);
 	}
 	//sleep(30);
 	return (0);

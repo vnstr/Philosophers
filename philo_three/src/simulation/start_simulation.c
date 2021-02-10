@@ -19,19 +19,23 @@
 
 int			create_forks(t_table *table)
 {
-	t_philo	*philos;
-	pid_t	id;
-	int		amount;
-	int		i;
+	t_philo		*philos;
+	t_tracking	*tracking;
+	pid_t		id;
+	int			amount;
+	int			i;
 
 	philos = table->philos;
 	amount = table->args->nb_of_philos;
 	i = 0;
+	table->start_sim_time = get_mstime();
 	while (i < amount)
 	{
+		tracking = &table->trackings[i];
 		id = fork();
 		if (id == 0)
 		{
+			pthread_create(&tracking->thread, NULL, track, (void*)tracking);
 			live((void*)&philos[i]);
 			exit(0);
 		}
@@ -43,20 +47,18 @@ int			create_forks(t_table *table)
 int			start_simulation(t_table *table)
 {
 	int			nb_of_philo_threads;
-	int			tracking_id;
+	int			killer_id;
 
 	nb_of_philo_threads = table->args->nb_of_philos;
 	if (create_forks(table) != nb_of_philo_threads)
 		return (1);
-	tracking_id = fork();
-	if (tracking_id == 0)
+	killer_id = fork();
+	if (killer_id == 0)
 	{
-		track((void*)table->tracking);
+		sleep(10);
 		exit(0);
 	}
-	else
-		waitpid(tracking_id, NULL, 0);
-	printf("OK\n");
+	waitpid(killer_id, NULL, 0);
 	/*
 	if (join_threads(table) != nb_of_philo_threads + 1)
 		return (1);

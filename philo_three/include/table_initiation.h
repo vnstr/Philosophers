@@ -68,7 +68,6 @@ t_msgs				*init_msgs(void);
 
 typedef struct		s_philo
 {
-	pthread_t		thread;
 	t_msgs			*msgs;
 	t_fork			*forks;
 	sem_t			*saying;
@@ -89,7 +88,7 @@ typedef struct		s_tracking
 {
 	pthread_t		thread;
 	t_input_args	*args;
-	t_philo			*philos;
+	t_philo			*philo;
 	uint8_t			*someone_dead_f;
 	uint8_t			*each_eated_f;
 }					t_tracking;
@@ -99,7 +98,7 @@ typedef struct		s_table
 	t_input_args	*args;
 	t_fork			*forks;
 	t_philo			*philos;
-	t_tracking		*tracking;
+	t_tracking		*trackings;
 	sem_t			*saying;
 	uint64_t		start_sim_time;
 	uint8_t			saying_sem_f;
@@ -110,7 +109,7 @@ typedef struct		s_table
 void				del_philos(t_philo **philos, uint32_t amount);
 t_philo				*init_philos(t_table *table);
 
-t_tracking			*init_tracking(t_table *table);
+t_tracking			*init_trackings(t_table *table);
 
 t_table				*init_table(int argc, char **argv);
 void				del_table(t_table **table);

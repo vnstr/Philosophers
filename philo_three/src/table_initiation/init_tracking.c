@@ -14,16 +14,24 @@
 
 #include "table_initiation.h"
 
-t_tracking	*init_tracking(t_table *table)
+t_tracking	*init_trackings(t_table *table)
 {
-	t_tracking	*tracking;
+	t_tracking	*trackings;
+	int			amount;
+	int			i;
 
-	tracking = (t_tracking*)malloc(sizeof(t_tracking));
-	if (tracking == NULL)
+	amount = table->args->nb_of_philos;
+	trackings = (t_tracking*)malloc(sizeof(t_tracking) * amount);
+	if (trackings == NULL)
 		return (NULL);
-	tracking->args = table->args;
-	tracking->philos = table->philos;
-	tracking->someone_dead_f = &table->someone_dead_f;
-	tracking->each_eated_f = &table->each_eated_f;
-	return (tracking);
+	i = 0;
+	while (i < amount)
+	{
+		trackings[i].args = table->args;
+		trackings[i].philo = &table->philos[i];
+		trackings[i].someone_dead_f = &table->someone_dead_f;
+		trackings->each_eated_f = &table->each_eated_f;
+		i += 1;
+	}
+	return (trackings);
 }

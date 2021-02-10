@@ -29,8 +29,8 @@ void		del_table(t_table **table)
 		sem_close((*table)->saying);
 		sem_unlink(SAYNG_SEM);
 	}
-	if ((*table)->tracking != NULL)
-		free((*table)->tracking);
+	if ((*table)->trackings != NULL)
+		free((*table)->trackings);
 	free(*table);
 }
 
@@ -57,7 +57,7 @@ static int	init_env(t_table *table, int argc, char **argv)
 		return (1);
 	if ((table->philos = init_philos(table)) == NULL)
 		return (1);
-	if ((table->tracking = init_tracking(table)) == NULL)
+	if ((table->trackings = init_trackings(table)) == NULL)
 		return (1);
 	return (0);
 }
@@ -71,7 +71,7 @@ t_table		*init_table(int argc, char **argv)
 	table->args = NULL;
 	table->forks = NULL;
 	table->philos = NULL;
-	table->tracking = NULL;
+	table->trackings = NULL;
 	table->start_sim_time = 0;
 	table->saying_sem_f = 0;
 	table->someone_dead_f = 0;

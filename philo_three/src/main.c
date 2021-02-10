@@ -55,12 +55,14 @@ void	print_table(t_table *table)
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
 
-	printf("\n~~~~~~~tracking:\n\n");
+	/*
+	printf("\n~~~~~~~trackings:\n\n");
 
-		printf("tracking->philos[0].id = |%u|\n",
-				table->tracking->philos[0].id);
+		printf("trackings[0]philos[0].id = |%u|\n",
+				table->trackings[0].philos[0].id);
 
 	printf("\n~~~~~~~~~~~~~~~~~\n");
+	*/
 
 	printf("\n-------------------\n");
 }
