@@ -23,12 +23,11 @@ void	kill_philos(t_killer *killer)
 	int	i;
 
 	i = 0;
-	while (i < killer->args->nb_of_philos)
+	while (i < killer->args->nb_of_philos && killer->philos[i].pid != 0)
 	{
 		kill(killer->philos[i].pid, 9);
 		i += 1;
 	}
-	exit(0);
 }
 
 void	*check_each_eated(void *killer_arg)
@@ -44,13 +43,16 @@ void	*check_each_eated(void *killer_arg)
 		amount -= 1;
 	}
 	kill_philos(killer);
+	exit(0);
 	return (NULL);
 }
 
 void	wait_and_kill(t_killer *killer)
 {
 	if (killer->args->nb_of_must_eat != 0)
-		pthread_create(&killer->each_eated_checker, NULL, check_each_eated, (void*)killer);
+		pthread_create(&killer->each_eated_checker, NULL, check_each_eated,
+															(void*)killer);
 	sem_wait(killer->someone_dead_sem);
 	kill_philos(killer);
+	exit(0);
 }

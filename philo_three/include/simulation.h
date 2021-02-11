@@ -21,6 +21,7 @@ int		live(void *philo_arg);
 int		check_death(t_philo *philo);
 void	*track(void *tracking);
 
+void	kill_philos(t_killer *killer);
 void	wait_and_kill(t_killer *killer);
 
 void	get_dying(t_philo *philo);

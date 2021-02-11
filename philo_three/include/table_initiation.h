@@ -21,6 +21,7 @@
 # define CREATE_THREAD_ERROR "Error: can't create thread\n"
 # define JOIN_THREAD_ERROR "Error: can't join thread\n"
 # define OPEN_SEM_ERROR "Error: can't open semaphore\n"
+# define CREATE_FORK_ERROR "Error: can't create child process\n"
 
 # define FORKS_SEM "forks_sem"
 # define SAYNG_SEM "saying_sem"

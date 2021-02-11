@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-
 #include "table_initiation.h"
 #include "simulation.h"
 #include "utils.h"
@@ -21,13 +18,12 @@ int		check_death(t_philo *philo)
 {
 	return ((int64_t)get_sim_mstime(*philo->start_sim_time)
 			- (int64_t)philo->last_eating_time
-			> (int64_t)*philo->time_to_die);
+			> (int64_t)*philo->time_to_die + 1);
 }
 
 void	check_philos_death_or_each_eated(t_tracking *tracking)
 {
 	t_philo		*philo;
-	int			i;
 
 	philo = tracking->philo;
 	if (check_death(philo))
@@ -37,8 +33,6 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 		sem_post(tracking->someone_dead_sem);
 	}
 }
-
-#include <stdio.h>
 
 void	*track(void *tracking_arg)
 {

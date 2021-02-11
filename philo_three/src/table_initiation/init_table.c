@@ -44,24 +44,24 @@ void		del_table(t_table **table)
 static int	init_sems(t_table *table)
 {
 	sem_unlink(SAYNG_SEM);
-	if ((table->saying = sem_open(SAYNG_SEM, O_CREAT | O_EXCL, 066, 1))
-			== SEM_FAILED)
+	if ((table->saying = sem_open(SAYNG_SEM, O_CREAT | O_EXCL,
+					066, 1)) == SEM_FAILED)
 	{
 		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
 		return (1);
 	}
 	table->saying_sem_f = 1;
 	sem_unlink(SOMEONE_DEAD_SEM);
-	if ((table->someone_dead_sem = sem_open(SOMEONE_DEAD_SEM, O_CREAT | O_EXCL, 066, 0))
-			== SEM_FAILED)
+	if ((table->someone_dead_sem = sem_open(SOMEONE_DEAD_SEM, O_CREAT | O_EXCL,
+					066, 0)) == SEM_FAILED)
 	{
 		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
 		return (1);
 	}
 	table->someone_dead_sem_f = 1;
 	sem_unlink(EACH_EATED_SEM);
-	if ((table->each_eated_sem = sem_open(EACH_EATED_SEM, O_CREAT | O_EXCL, 066, 0))
-			== SEM_FAILED)
+	if ((table->each_eated_sem = sem_open(EACH_EATED_SEM, O_CREAT | O_EXCL,
+					066, 0)) == SEM_FAILED)
 	{
 		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
 		return (1);

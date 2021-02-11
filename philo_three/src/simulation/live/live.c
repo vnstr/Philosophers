@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-
 #include "table_initiation.h"
 #include "forks.h"
 #include "saying.h"
@@ -51,8 +49,6 @@ static void	get_eating(t_philo *philo)
 	sem_post(philo->forks->sem);
 	sem_post(philo->forks->sem);
 }
-
-#include <stdio.h>
 
 int			live(void *philo_arg)
 {
