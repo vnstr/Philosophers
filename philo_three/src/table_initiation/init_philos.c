@@ -33,6 +33,7 @@ void		init_params(t_philo *philo, t_table *table)
 {
 	philo->forks = table->forks;
 	philo->saying = table->saying;
+	philo->each_eated_sem = table->each_eated_sem;
 	philo->someone_dead_f = &(table->someone_dead_f);
 	philo->each_eated_f = &(table->each_eated_f);
 	philo->start_sim_time = &(table->start_sim_time);
@@ -59,6 +60,7 @@ t_philo		*init_philos(t_table *table)
 	while (i < amount)
 	{
 		philos[i].id = i + 1;
+		philos[i].pid = 0;
 		if ((philos[i].msgs = init_msgs()) == NULL)
 		{
 			free(philos);

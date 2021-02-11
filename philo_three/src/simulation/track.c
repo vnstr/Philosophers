@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 
 #include "table_initiation.h"
 #include "simulation.h"
@@ -18,25 +19,9 @@
 
 int		check_death(t_philo *philo)
 {
-	return (get_sim_mstime(*philo->start_sim_time)
-			- philo->last_eating_time
-			>= (uint64_t)*philo->time_to_die);
-}
-
-int		check_each_eated(t_tracking *tracking)
-{
-	t_philo		*philo;
-	uint64_t	amount_eaten;
-	int			amount_philos;
-	int			nb_of_must_eat;
-	int			i;
-
-	philo = tracking->philo;
-	amount_eaten = 0;
-	amount_philos = tracking->args->nb_of_philos;
-	nb_of_must_eat = tracking->args->nb_of_must_eat;
-	i = 0;
-	return (0);
+	return ((int64_t)get_sim_mstime(*philo->start_sim_time)
+			- (int64_t)philo->last_eating_time
+			> (int64_t)*philo->time_to_die);
 }
 
 void	check_philos_death_or_each_eated(t_tracking *tracking)
@@ -45,17 +30,12 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 	int			i;
 
 	philo = tracking->philo;
-	i = 0;
-	/*
 	if (check_death(philo))
 	{
 		philo->time_of_death = get_sim_mstime(*philo->start_sim_time);
 		get_dying(philo);
+		sem_post(tracking->someone_dead_sem);
 	}
-	*/
-	//if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
-		//*tracking->each_eated_f = 1;
-	i += 1;
 }
 
 #include <stdio.h>
@@ -64,13 +44,8 @@ void	*track(void *tracking_arg)
 {
 	t_tracking	*tracking;
 
-	//printf("tracking_arg_p = |%p|\n", tracking_arg);
 	tracking = (t_tracking*)tracking_arg;
-	printf("tracking->philo->id = |%d|\n", tracking->philo->id);
-	/*
 	while (*tracking->someone_dead_f == 0 && *tracking->each_eated_f == 0)
 		check_philos_death_or_each_eated(tracking);
-		*/
-	//sleep(10);
 	return (NULL);
 }

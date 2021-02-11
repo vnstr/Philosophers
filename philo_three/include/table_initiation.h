@@ -24,7 +24,9 @@
 
 # define FORKS_SEM "forks_sem"
 # define SAYNG_SEM "saying_sem"
-# define EACH_EATED_F_SEM "EACH_EATED_F_SEM"
+# define EACH_EATED_F_SEM "each_eated_f_sem"
+# define SOMEONE_DEAD_SEM "someone_dead_sem"
+# define EACH_EATED_SEM "each_eated_sem"
 
 typedef struct		s_input_args
 {
@@ -71,6 +73,7 @@ typedef struct		s_philo
 	t_msgs			*msgs;
 	t_fork			*forks;
 	sem_t			*saying;
+	sem_t			*each_eated_sem;
 	uint8_t			*someone_dead_f;
 	uint8_t			*each_eated_f;
 	uint64_t		*start_sim_time;
@@ -82,6 +85,7 @@ typedef struct		s_philo
 	uint64_t		eating_counter;
 	uint64_t		time_of_death;
 	int				id;
+	int				pid;
 }					t_philo;
 
 typedef struct		s_tracking
@@ -89,9 +93,19 @@ typedef struct		s_tracking
 	pthread_t		thread;
 	t_input_args	*args;
 	t_philo			*philo;
+	sem_t			*someone_dead_sem;
 	uint8_t			*someone_dead_f;
 	uint8_t			*each_eated_f;
 }					t_tracking;
+
+typedef struct		s_killer
+{
+	t_input_args	*args;
+	t_philo			*philos;
+	pthread_t		each_eated_checker;
+	sem_t			*someone_dead_sem;
+	sem_t			*each_eated_sem;
+}					t_killer;
 
 typedef struct		s_table
 {
@@ -99,9 +113,14 @@ typedef struct		s_table
 	t_fork			*forks;
 	t_philo			*philos;
 	t_tracking		*trackings;
+	t_killer		*killer;
 	sem_t			*saying;
+	sem_t			*someone_dead_sem;
+	sem_t			*each_eated_sem;
 	uint64_t		start_sim_time;
 	uint8_t			saying_sem_f;
+	uint8_t			someone_dead_sem_f;
+	uint8_t			each_eated_sem_f;
 	uint8_t			someone_dead_f;
 	uint8_t			each_eated_f;
 }					t_table;
@@ -110,6 +129,8 @@ void				del_philos(t_philo **philos, uint32_t amount);
 t_philo				*init_philos(t_table *table);
 
 t_tracking			*init_trackings(t_table *table);
+
+t_killer			*init_killer(t_table *table);
 
 t_table				*init_table(int argc, char **argv);
 void				del_table(t_table **table);

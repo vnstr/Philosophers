@@ -29,8 +29,9 @@ t_tracking	*init_trackings(t_table *table)
 	{
 		trackings[i].args = table->args;
 		trackings[i].philo = &table->philos[i];
+		trackings[i].someone_dead_sem = table->someone_dead_sem;
 		trackings[i].someone_dead_f = &table->someone_dead_f;
-		trackings->each_eated_f = &table->each_eated_f;
+		trackings[i].each_eated_f = &table->each_eated_f;
 		i += 1;
 	}
 	return (trackings);

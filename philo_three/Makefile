@@ -17,7 +17,8 @@ TABLE_INITIATION_FILES = init_table.c\
 						 init_forks.c\
 						 init_msgs.c\
 						 init_philos.c\
-						 init_tracking.c
+						 init_tracking.c\
+						 init_killer.c
 
 TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
 
@@ -27,7 +28,8 @@ TABLE_INITIATION = $(addprefix table_initiation/, $(TABLE_INITIATION_FILES))
 
 SIMULATION_FILES = start_simulation.c\
 				   $(LIVE)\
-				   track.c
+				   track.c\
+				   wait_and_kill.c
 
 #-----------------------------       LIVE         ------------------------------
 

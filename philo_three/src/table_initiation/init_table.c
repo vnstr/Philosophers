@@ -29,8 +29,15 @@ void		del_table(t_table **table)
 		sem_close((*table)->saying);
 		sem_unlink(SAYNG_SEM);
 	}
+	if ((*table)->someone_dead_sem_f != 0)
+	{
+		sem_close((*table)->someone_dead_sem);
+		sem_unlink(SOMEONE_DEAD_SEM);
+	}
 	if ((*table)->trackings != NULL)
 		free((*table)->trackings);
+	if ((*table)->killer != NULL)
+		free((*table)->killer);
 	free(*table);
 }
 
@@ -44,6 +51,22 @@ static int	init_sems(t_table *table)
 		return (1);
 	}
 	table->saying_sem_f = 1;
+	sem_unlink(SOMEONE_DEAD_SEM);
+	if ((table->someone_dead_sem = sem_open(SOMEONE_DEAD_SEM, O_CREAT | O_EXCL, 066, 0))
+			== SEM_FAILED)
+	{
+		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
+		return (1);
+	}
+	table->someone_dead_sem_f = 1;
+	sem_unlink(EACH_EATED_SEM);
+	if ((table->each_eated_sem = sem_open(EACH_EATED_SEM, O_CREAT | O_EXCL, 066, 0))
+			== SEM_FAILED)
+	{
+		write(2, OPEN_SEM_ERROR, ft_strlen(OPEN_SEM_ERROR));
+		return (1);
+	}
+	table->each_eated_sem_f = 1;
 	return (0);
 }
 
@@ -59,6 +82,8 @@ static int	init_env(t_table *table, int argc, char **argv)
 		return (1);
 	if ((table->trackings = init_trackings(table)) == NULL)
 		return (1);
+	if ((table->killer = init_killer(table)) == NULL)
+		return (1);
 	return (0);
 }
 
@@ -72,8 +97,11 @@ t_table		*init_table(int argc, char **argv)
 	table->forks = NULL;
 	table->philos = NULL;
 	table->trackings = NULL;
+	table->killer = NULL;
 	table->start_sim_time = 0;
 	table->saying_sem_f = 0;
+	table->someone_dead_sem_f = 0;
+	table->each_eated_sem_f = 0;
 	table->someone_dead_f = 0;
 	table->each_eated_f = 0;
 	if (init_env(table, argc, argv) != 0)
