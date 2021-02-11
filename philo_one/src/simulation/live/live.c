@@ -38,7 +38,7 @@ static void	get_sleeping(t_philo *philo)
 	}
 	say_sleeping(philo);
 	pthread_mutex_unlock(philo->saying);
-	ft_mssleep(*philo->time_to_sleep);
+	ft_mssleep(*philo->time_to_sleep, philo);
 }
 
 static void	get_thinking(t_philo *philo)
@@ -67,7 +67,7 @@ static void	get_eating(t_philo *philo)
 	pthread_mutex_unlock(philo->saying);
 	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
 	philo->eating_counter += 1;
-	ft_mssleep(*philo->time_to_eat);
+	ft_mssleep(*philo->time_to_eat, philo);
 	put_forks(philo);
 }
 
@@ -81,13 +81,13 @@ void		*live(void *philo_arg)
 	someone_dead_f = philo->someone_dead_f;
 	each_eated_f = philo->each_eated_f;
 	if (philo->id % 2)
-		ft_mssleep(60);
+		ft_mssleep(60, philo);
 	while (*someone_dead_f == 0 && *each_eated_f == 0)
 	{
 		get_sleeping(philo);
 		get_thinking(philo);
 		get_eating(philo);
 	}
-	ft_mssleep(philo->id);
+	ft_mssleep(philo->id, philo);
 	return (NULL);
 }

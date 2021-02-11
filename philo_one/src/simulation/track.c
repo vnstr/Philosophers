@@ -20,7 +20,7 @@ int		check_death(t_philo *philo)
 {
 	return (get_sim_mstime(*philo->start_sim_time)
 			- philo->last_eating_time
-			>= (uint64_t)*philo->time_to_die);
+			> (uint64_t)*philo->time_to_die + 1);
 }
 
 int		check_each_eated(t_tracking *tracking)

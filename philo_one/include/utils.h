@@ -16,6 +16,8 @@
 # include <stdint.h>
 # include <stdlib.h>
 
+# include "table_initiation.h"
+
 size_t		ft_strlen(const char *s);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 int			ft_atoi(const char *str);
@@ -27,6 +29,6 @@ char		*ft_strdup(const char *s1);
 uint64_t	get_mstime(void);
 uint64_t	get_sim_mstime(uint64_t start_sim_time);
 
-void		ft_mssleep(uint64_t mstime);
+void		ft_mssleep(uint64_t mstime, t_philo *philo);
 
 #endif

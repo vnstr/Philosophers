@@ -10,13 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 #include "table_initiation.h"
 #include "saying.h"
+#include "utils.h"
 
 static int	get_fork(t_philo *philo)
 {
 	sem_wait(philo->forks->sem);
 	sem_wait(philo->saying);
+	usleep(50);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
 		sem_post(philo->forks->sem);

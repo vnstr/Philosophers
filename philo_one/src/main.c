@@ -11,61 +11,10 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdint.h>
 #include <unistd.h>
-#include <stdio.h>
 
 #include "table_initiation.h"
 #include "simulation.h"
-#include "utils.h"
-
-void	print_table(t_table *table)
-{
-	printf("------ TABLE ------\n");
-
-	printf("\n~~~~~~input args:\n\n");
-
-	t_input_args	*args = table->args;
-	printf("nb_of_philos = |%u|\n", args->nb_of_philos);
-	printf("time_to_die = |%u|\n", args->time_to_die);
-	printf("time_to_eat = |%u|\n", args->time_to_eat);
-	printf("time_to_sleep = |%u|\n", args->time_to_sleep);
-	printf("nb_of_must_eat = |%u|\n", args->nb_of_must_eat);
-
-	printf("\n~~~~~~~~~~~~~~~~~\n");
-
-	printf("\n~~~~~~~~messages:\n\n");
-
-	printf("eating:   %s", table->philos->msgs->eating);
-	printf("sleep:    %s", table->philos->msgs->sleeping);
-	printf("thinking: %s", table->philos->msgs->thinking);
-	printf("die:      %s", table->philos->msgs->dying);
-
-	printf("\n~~~~~~~~~~~~~~~~~\n");
-
-	printf("\n~~~~~~~~~~philos:\n");
-
-	for (int32_t i = 0; i < table->args->nb_of_philos; i += 1)
-	{
-		printf("\nphilos_id[%u]:\nleft_fork_id =  |%u|\nleft_right_id = |%u|\n",
-				table->philos[i].id,
-				table->philos[i].left_fork->id,
-				table->philos[i].right_fork->id);
-	}
-
-	printf("\n~~~~~~~~~~~~~~~~~\n");
-
-	printf("\n~~~~~~~tracking:\n\n");
-
-		printf("tracking->philos[0].id = |%u|\n",
-				table->tracking->philos[0].id);
-
-	printf("\n~~~~~~~~~~~~~~~~~\n");
-
-	printf("\n-------------------\n");
-}
-
-# include <sys/time.h>
 
 int			main(int argc, char **argv)
 {
@@ -73,7 +22,6 @@ int			main(int argc, char **argv)
 
 	if ((table = init_table(argc, argv)) == NULL)
 		return (1);
-	print_table(table);
 	if (start_simulation(table) != 0)
 	{
 		del_table(&table);
@@ -81,7 +29,6 @@ int			main(int argc, char **argv)
 		exit(1);
 	}
 	del_table(&table);
-	//sleep(20);
-	//usleep(20000000);
+	sleep(10);
 	return (0);
 }

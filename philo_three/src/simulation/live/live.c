@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 #include "table_initiation.h"
 #include "forks.h"
 #include "saying.h"
@@ -24,6 +26,7 @@ void		get_dying(t_philo *philo)
 static void	get_sleeping(t_philo *philo)
 {
 	sem_wait(philo->saying);
+	usleep(50);
 	say_sleeping(philo);
 	sem_post(philo->saying);
 	ft_mssleep(*philo->time_to_sleep, philo);
@@ -32,6 +35,7 @@ static void	get_sleeping(t_philo *philo)
 static void	get_thinking(t_philo *philo)
 {
 	sem_wait(philo->saying);
+	usleep(50);
 	say_thinking(philo);
 	sem_post(philo->saying);
 }
