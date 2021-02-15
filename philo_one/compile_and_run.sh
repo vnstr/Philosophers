@@ -2,10 +2,10 @@
 
 #nobody die
 
-	make && ./philo_one 5 800 200 200
+#	make && ./philo_one 5 800 200 200
 
 #nobody die, 7 times eat
-#	make && ./philo_one 5 800 200 200 7
+	make && ./philo_one 5 800 200 200 7
 
 #nobody die, 8 times eat
 #	make && ./philo_one 4 800 200 200 2

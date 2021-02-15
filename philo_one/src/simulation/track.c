@@ -20,7 +20,7 @@ int		check_death(t_philo *philo)
 {
 	return (get_sim_mstime(*philo->start_sim_time)
 			- philo->last_eating_time
-			> (uint64_t)*philo->time_to_die + 1);
+			> (uint64_t)*philo->time_to_die + 5);
 }
 
 int		check_each_eated(t_tracking *tracking)
@@ -63,9 +63,9 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 		}
 		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
 		{
-			pthread_mutex_lock(tracking->each_eated_f_mutex);
+			pthread_mutex_lock(philos->saying);
 			*tracking->each_eated_f = 1;
-			pthread_mutex_unlock(tracking->each_eated_f_mutex);
+			pthread_mutex_unlock(philos->saying);
 		}
 		i += 1;
 	}
