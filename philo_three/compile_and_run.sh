@@ -5,7 +5,7 @@
 #	make && ./philo_three 5 800 200 200
 
 #nobody die, 7 times eat
-	make && ./philo_three 5 800 200 200 7
+#	make && ./philo_three 5 800 200 200 7
 
 #nobody die, 8 times eat
 #	make && ./philo_three 4 800 200 200 2
@@ -17,4 +17,4 @@
 #	make && ./philo_three 4 310 200 100
 
 #check rigth die-time (correct in 1500ms)
-#	make && ./philo_three 2 1500 2000 2000
+	make && ./philo_three 2 1500 2000 2000

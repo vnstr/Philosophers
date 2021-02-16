@@ -20,7 +20,7 @@ static int	get_fork(t_philo *philo)
 {
 	sem_wait(philo->forks->sem);
 	sem_wait(philo->saying);
-	usleep(50);
+	usleep(20);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
 		sem_post(philo->forks->sem);
