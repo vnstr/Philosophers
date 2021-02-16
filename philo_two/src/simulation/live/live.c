@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 #include "table_initiation.h"
 #include "forks.h"
 #include "saying.h"

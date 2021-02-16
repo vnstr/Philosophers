@@ -2,7 +2,7 @@
 
 #nobody die
 
-	make && ./philo_two 5 800 200 200
+#	make && ./philo_two 5 800 200 200
 
 #nobody die, 7 times eat
 #	make && ./philo_two 5 800 200 200 7
@@ -11,7 +11,7 @@
 #	make && ./philo_two 4 800 200 200 2
 
 #nobody die
-#	make && ./philo_two 4 410 200 200
+	make && ./philo_two 4 410 200 200
 
 #should die
 #	make && ./philo_two 4 310 200 100

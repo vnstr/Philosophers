@@ -20,7 +20,7 @@ int		check_death(t_philo *philo)
 {
 	return (get_sim_mstime(*philo->start_sim_time)
 			- philo->last_eating_time
-			> (uint64_t)*philo->time_to_die + 1);
+			> (uint64_t)*philo->time_to_die + 5);
 }
 
 int		check_each_eated(t_tracking *tracking)
@@ -62,7 +62,11 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 			break ;
 		}
 		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
+		{
+			sem_wait(philos->saying);
 			*tracking->each_eated_f = 1;
+			sem_post(philos->saying);
+		}
 		i += 1;
 	}
 }
