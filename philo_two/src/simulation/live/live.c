@@ -65,6 +65,7 @@ static void	get_eating(t_philo *philo)
 		return ;
 	}
 	say_eating(philo);
+	ft_usleep(50);
 	sem_post(philo->saying);
 	philo->last_eating_time = get_sim_mstime(*philo->start_sim_time);
 	philo->eating_counter += 1;

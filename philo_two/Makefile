@@ -62,7 +62,9 @@ UTILS_FILES = ft_strlen.c\
 			  ft_putnbr_fd.c\
 			  ft_strdup.c\
 			  get_time.c\
-			  ft_mssleep.c
+			  get_utime.c\
+			  ft_mssleep.c\
+			  ft_usleep.c
 
 UTILS = $(addprefix utils/, $(UTILS_FILES))
 

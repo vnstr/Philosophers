@@ -63,9 +63,7 @@ void	check_philos_death_or_each_eated(t_tracking *tracking)
 		}
 		if (tracking->args->nb_of_must_eat != 0 && check_each_eated(tracking))
 		{
-			sem_wait(philos->saying);
 			*tracking->each_eated_f = 1;
-			sem_post(philos->saying);
 		}
 		i += 1;
 	}

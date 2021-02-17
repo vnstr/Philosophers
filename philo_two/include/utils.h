@@ -28,7 +28,9 @@ char		*ft_strdup(const char *s1);
 
 uint64_t	get_mstime(void);
 uint64_t	get_sim_mstime(uint64_t start_sim_time);
+uint64_t	get_utime(void);
 
 void		ft_mssleep(uint64_t mstime, t_philo *philo);
+void		ft_usleep(uint64_t utime);
 
 #endif
