@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
 #include "table_initiation.h"
 #include "forks.h"
 #include "saying.h"
@@ -31,6 +33,7 @@ void		get_dying(t_philo *philo)
 static void	get_sleeping(t_philo *philo)
 {
 	pthread_mutex_lock(philo->saying);
+	usleep(20);
 	if (*philo->someone_dead_f != 0 || *philo->each_eated_f != 0)
 	{
 		pthread_mutex_unlock(philo->saying);
