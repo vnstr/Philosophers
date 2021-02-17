@@ -17,4 +17,4 @@
 #	make && ./philo_three 4 310 200 100
 
 #check rigth die-time (correct in 1500ms)
-	make && ./philo_three 2 1500 2000 2000
+#	make && ./philo_three 2 1500 2000 2000
